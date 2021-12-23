@@ -4,6 +4,7 @@ namespace Checkout;
 
 use Checkout\Events\EventsClient;
 use Checkout\Instruments\InstrumentsClient;
+use Checkout\Payments\PaymentsClient;
 use Checkout\Sources\SourcesClient;
 use Checkout\Tokens\TokensClient;
 use Checkout\Webhooks\WebhooksClient;
@@ -15,6 +16,7 @@ final class CheckoutApi
     private InstrumentsClient $instrumentsClient;
     private WebhooksClient $webhooksClient;
     private EventsClient $eventsClient;
+    private PaymentsClient $paymentsClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -23,6 +25,7 @@ final class CheckoutApi
         $this->instrumentsClient = new InstrumentsClient($apiClient, $configuration);
         $this->webhooksClient = new WebhooksClient($apiClient, $configuration);
         $this->eventsClient = new EventsClient($apiClient, $configuration);
+        $this->paymentsClient = new PaymentsClient($apiClient, $configuration);
     }
 
     public function getSourcesClient(): SourcesClient
@@ -48,6 +51,11 @@ final class CheckoutApi
     public function getEventsClient(): EventsClient
     {
         return $this->eventsClient;
+    }
+
+    public function getPaymentsClient(): PaymentsClient
+    {
+        return $this->paymentsClient;
     }
 
 }

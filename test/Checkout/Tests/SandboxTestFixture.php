@@ -47,9 +47,14 @@ abstract class SandboxTestFixture extends TestCase
         }
     }
 
-    protected function nap(): void
+    protected function nap(int $seconds = 5): void
     {
-        sleep(2);
+        sleep($seconds);
+    }
+
+    protected function randomEmail(): string
+    {
+        return uniqid() . "@checkout-sdk-net.com";
     }
 
 }
