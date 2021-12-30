@@ -20,6 +20,9 @@ final class SdkAuthorization
         $this->credential = $credential;
     }
 
+    /**
+     * @throws CheckoutAuthorizationException
+     */
     public function getAuthorizationHeader(): string
     {
         if ($this->platformType == PlatformType::$default) {

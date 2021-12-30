@@ -4,6 +4,7 @@ namespace Checkout\Instruments;
 
 use Checkout\ApiClient;
 use Checkout\AuthorizationType;
+use Checkout\CheckoutApiException;
 use Checkout\CheckoutConfiguration;
 use Checkout\Client;
 
@@ -19,6 +20,7 @@ class InstrumentsClient extends Client
     /**
      * @param CreateInstrumentRequest $createInstrumentRequest
      * @return mixed
+     * @throws CheckoutApiException
      */
     public function create(CreateInstrumentRequest $createInstrumentRequest)
     {
@@ -28,6 +30,7 @@ class InstrumentsClient extends Client
     /**
      * @param string $instrumentId
      * @return mixed
+     * @throws CheckoutApiException
      */
     public function get(string $instrumentId)
     {
@@ -38,6 +41,7 @@ class InstrumentsClient extends Client
      * @param string $instrumentId
      * @param UpdateInstrumentRequest $updateInstrumentRequest
      * @return mixed
+     * @throws CheckoutApiException
      */
     public function update(string $instrumentId, UpdateInstrumentRequest $updateInstrumentRequest)
     {
@@ -47,6 +51,7 @@ class InstrumentsClient extends Client
     /**
      * @param string $instrumentId
      * @return mixed
+     * @throws CheckoutApiException
      */
     public function delete(string $instrumentId)
     {

@@ -15,6 +15,9 @@ class StaticKeysSdkCredentials implements SdkCredentialsInterface
         $this->secretKey = $secretKey;
     }
 
+    /**
+     * @throws CheckoutAuthorizationException
+     */
     function getAuthorization(string $authorizationType): SdkAuthorization
     {
         switch ($authorizationType) {
