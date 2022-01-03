@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
-final class ApiClient
+class ApiClient
 {
     private CheckoutConfiguration $configuration;
 

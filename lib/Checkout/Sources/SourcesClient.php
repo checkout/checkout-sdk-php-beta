@@ -18,6 +18,7 @@ class SourcesClient extends Client
     /**
      * @param SepaSourceRequest $sepaSourceRequest
      * @return mixed
+     * @throws \Checkout\CheckoutApiException
      */
     public function createSepaSource(SepaSourceRequest $sepaSourceRequest)
     {
