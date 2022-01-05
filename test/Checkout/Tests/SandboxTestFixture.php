@@ -3,7 +3,9 @@
 namespace Checkout\Tests;
 
 use Checkout\CheckoutApi;
+use Checkout\CheckoutArgumentException;
 use Checkout\CheckoutDefaultSdk;
+use Checkout\CheckoutFourSdk;
 use Checkout\Environment;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertNotEmpty;
@@ -13,9 +15,11 @@ abstract class SandboxTestFixture extends TestCase
 {
 
     protected CheckoutApi $defaultApi;
+    protected \Checkout\Four\CheckoutApi $fourApi;
 
     /**
      * @before
+     * @throws CheckoutArgumentException
      */
     public function initDefaultApi(): void
     {
@@ -24,6 +28,12 @@ abstract class SandboxTestFixture extends TestCase
         $builder->setSecretKey(getenv("CHECKOUT_SECRET_KEY"));
         $builder->setEnvironment(Environment::sandbox());
         $this->defaultApi = $builder->build();
+
+        $builder = CheckoutFourSdk::staticKeys();
+        $builder->setPublicKey(getenv("CHECKOUT_FOUR_PUBLIC_KEY"));
+        $builder->setSecretKey(getenv("CHECKOUT_FOUR_SECRET_KEY"));
+        $builder->setEnvironment(Environment::sandbox());
+        $this->fourApi = $builder->build();
     }
 
     protected function assertResponse($obj, ...$properties): void // @phpstan-ignore-line
