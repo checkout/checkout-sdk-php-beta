@@ -1,14 +1,20 @@
 <?php
 
-namespace Checkout;
+namespace Checkout\Four;
 
-class StaticKeysCheckoutSdkBuilder extends AbstractCheckoutSdkBuilder
+use Checkout\AbstractCheckoutSdkBuilder;
+use Checkout\ApiClient;
+use Checkout\CheckoutArgumentException;
+use Checkout\CheckoutConfiguration;
+use Checkout\SdkCredentialsInterface;
+use Checkout\StaticKeysSdkCredentials;
+
+class FourStaticKeysCheckoutSdkBuilder extends AbstractCheckoutSdkBuilder
 {
+    private const SECRET_KEY_PATTERN = "/^sk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";
+    private const PUBLIC_KEY_PATTERN = "/^pk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";
 
-    private const SECRET_KEY_PATTERN = "/^sk_(test_)?(\\w{8})-(\\w{4})-(\\w{4})-(\\w{4})-(\\w{12})$/";
-    private const PUBLIC_KEY_PATTERN = "/^pk_(test_)?(\\w{8})-(\\w{4})-(\\w{4})-(\\w{4})-(\\w{12})$/";
-
-    private ?string $publicKey = null;
+    private ?string $publicKey;
 
     private string $secretKey;
 
