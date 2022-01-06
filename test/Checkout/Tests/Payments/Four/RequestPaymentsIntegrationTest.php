@@ -1,16 +1,15 @@
 <?php
 
-namespace Checkout\Tests\Payments;
+namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
 use Checkout\Common\Currency;
-use Checkout\Payments\PaymentRequest;
-use Checkout\Payments\Source\RequestCardSource;
+use Checkout\Payments\Four\Request\PaymentRequest;
+use Checkout\Payments\Four\Request\Source\RequestCardSource;
 use Checkout\Tests\TestCardSource;
 
 class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
-
     /**
      * @test
      * @throws CheckoutApiException
@@ -43,11 +42,9 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "source.last4",
             "source.scheme",
             "source.name",
-            "source.fast_funds",
             "source.fingerprint",
             "source.issuer",
             "source.issuer_country",
-            "source.payouts",
             "source.product_id",
             "source.product_type",
             "customer",
@@ -110,11 +107,9 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "source.last4",
             "source.scheme",
             "source.name",
-            "source.fast_funds",
             "source.fingerprint",
             "source.issuer",
             "source.issuer_country",
-            "source.payouts",
             "source.product_id",
             "source.product_type",
             "customer",
@@ -158,11 +153,9 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "source.last4",
             "source.scheme",
             "source.name",
-            "source.fast_funds",
             "source.fingerprint",
             "source.issuer",
             "source.issuer_country",
-            "source.payouts",
             "source.product_id",
             "source.product_type",
             "customer",
@@ -195,13 +188,12 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->amount = 10;
         $paymentRequest->currency = Currency::$GBP;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
         self::assertNotNull($paymentResponse1);
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $paymentResponse2 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
         self::assertNotNull($paymentResponse2);
 
         self::assertEquals($paymentResponse1["action_id"], $paymentResponse2["action_id"]);
     }
-
 }

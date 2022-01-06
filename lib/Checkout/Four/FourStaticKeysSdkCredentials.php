@@ -1,13 +1,18 @@
 <?php
 
-namespace Checkout;
+namespace Checkout\Four;
 
-use Checkout\Four\AbstractStaticKeysSdkCredentials;
+use Checkout\AuthorizationType;
+use Checkout\CheckoutArgumentException;
+use Checkout\CheckoutAuthorizationException;
+use Checkout\PlatformType;
+use Checkout\SdkAuthorization;
 
-class StaticKeysSdkCredentials extends AbstractStaticKeysSdkCredentials
+class FourStaticKeysSdkCredentials extends AbstractStaticKeysSdkCredentials
 {
-    private const SECRET_KEY_PATTERN = "/^sk_(test_)?(\\w{8})-(\\w{4})-(\\w{4})-(\\w{4})-(\\w{12})$/";
-    private const PUBLIC_KEY_PATTERN = "/^pk_(test_)?(\\w{8})-(\\w{4})-(\\w{4})-(\\w{4})-(\\w{12})$/";
+
+    private const SECRET_KEY_PATTERN = "/^sk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";
+    private const PUBLIC_KEY_PATTERN = "/^pk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";
 
     /**
      * @param string $secretKey
@@ -19,8 +24,8 @@ class StaticKeysSdkCredentials extends AbstractStaticKeysSdkCredentials
         parent::__construct($secretKey, $publicKey);
         $this->validateSecretKey(self::SECRET_KEY_PATTERN);
         $this->validatePublicKey(self::PUBLIC_KEY_PATTERN);
-    }
 
+    }
 
     /**
      * @throws CheckoutAuthorizationException
@@ -32,12 +37,12 @@ class StaticKeysSdkCredentials extends AbstractStaticKeysSdkCredentials
                 if (empty($this->publicKey)) {
                     throw new CheckoutAuthorizationException("public key is required for this operation");
                 }
-                return new SdkAuthorization(PlatformType::$default, $this->publicKey);
+                return new SdkAuthorization(PlatformType::$four, $this->publicKey);
             case AuthorizationType::$secretKey:
                 if (empty($this->secretKey)) {
                     throw new CheckoutAuthorizationException("secret key is required for this operation");
                 }
-                return new SdkAuthorization(PlatformType::$default, $this->secretKey);
+                return new SdkAuthorization(PlatformType::$four, $this->secretKey);
             default:
                 throw new CheckoutAuthorizationException("Operation does not support" . $authorizationType . "authorization type");
         }

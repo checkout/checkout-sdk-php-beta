@@ -1,6 +1,6 @@
 <?php
 
-namespace Checkout\Tests\Webhooks;
+namespace Checkout\Tests;
 
 class TestCardSource
 {
