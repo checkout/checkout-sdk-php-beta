@@ -6,7 +6,7 @@ use Checkout\CheckoutApiException;
 use Checkout\Common\Currency;
 use Checkout\Payments\Destination\PaymentRequestCardDestination;
 use Checkout\Payments\PayoutRequest;
-use Checkout\Tests\Webhooks\TestCardSource;
+use Checkout\Tests\TestCardSource;
 
 class RequestPayoutsIntegrationTest extends AbstractPaymentsIntegrationTest
 {

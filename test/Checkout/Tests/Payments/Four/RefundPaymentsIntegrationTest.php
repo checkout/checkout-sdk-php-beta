@@ -1,13 +1,12 @@
 <?php
 
-namespace Checkout\Tests\Payments;
+namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
 use Checkout\Payments\RefundRequest;
 
 class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
-
     /**
      * @test
      * @throws CheckoutApiException
@@ -18,14 +17,25 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
         $this->nap();
 
+        $amount = $paymentResponse["amount"];
         $refundRequest = new RefundRequest();
         $refundRequest->reference = uniqid();
+        $refundRequest->amount = $amount;
 
-        $response = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"]);
+        $response = $this->fourApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest);
 
-        $this->assertResponse($response,
-            "action_id",
-            "reference");
+        $this->assertResponse($response, "reference", "action_id");
+
+        $this->nap();
+
+        $paymentDetails = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]);
+        $this->assertResponse($paymentDetails,
+            "balances.total_authorized",
+            "balances.total_captured",
+            "balances.total_refunded");
+        self::assertEquals($amount, $paymentDetails["balances"]["total_authorized"]);
+        self::assertEquals($amount, $paymentDetails["balances"]["total_captured"]);
+        self::assertEquals($amount, $paymentDetails["balances"]["total_refunded"]);
     }
 
     /**
@@ -42,7 +52,7 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $refundRequest->reference = uniqid("shouldRefundCardPayment_Idempotent");
         $refundRequest->amount = 2;
 
-        $response1 = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest, $this->idempotencyKey);
+        $response1 = $this->fourApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest, $this->idempotencyKey);
 
         $this->assertResponse($response1,
             "action_id",
@@ -52,9 +62,8 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $refundRequest2->reference = uniqid("shouldRefundCardPayment_Idempotent2");
         $refundRequest2->amount = 2;
 
-        $response2 = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest2, $this->idempotencyKey);
+        $response2 = $this->fourApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest2, $this->idempotencyKey);
 
         self::assertEquals($response1["action_id"], $response2["action_id"]);
     }
-
 }

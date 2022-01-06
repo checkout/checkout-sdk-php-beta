@@ -1,10 +1,17 @@
 <?php
 
-namespace Checkout\Payments;
+namespace Checkout\Payments\Four\Request;
 
 use Checkout\CheckoutUtils;
 use Checkout\Common\CustomerRequest;
-use Checkout\Payments\Source\AbstractRequestSource;
+use Checkout\Common\MarketplaceData;
+use Checkout\Payments\Four\Request\Source\AbstractRequestSource;
+use Checkout\Payments\Four\Sender\PaymentSender;
+use Checkout\Payments\PaymentRecipient;
+use Checkout\Payments\ProcessingSettings;
+use Checkout\Payments\RiskRequest;
+use Checkout\Payments\ShippingDetails;
+use Checkout\Payments\ThreeDsRequest;
 use DateTime;
 use JsonSerializable;
 
@@ -16,6 +23,7 @@ class PaymentRequest implements JsonSerializable
 
     public string $currency;
 
+    //AuthorizationType
     public string $payment_type;
 
     public bool $merchant_initiated;
@@ -24,15 +32,19 @@ class PaymentRequest implements JsonSerializable
 
     public string $description;
 
+    public string $authorization_type;
+
     public bool $capture;
 
     public DateTime $capture_on;
 
     public CustomerRequest $customer;
 
-    public BillingDescriptor $billing_descriptor;
-
     public ShippingDetails $shipping;
+
+    public ThreeDsRequest $three_ds;
+
+    public string $processing_channel_id;
 
     public string $previous_payment_id;
 
@@ -44,16 +56,19 @@ class PaymentRequest implements JsonSerializable
 
     public string $payment_ip;
 
-    public ThreeDsRequest $three_ds;
+    public PaymentSender $sender;
 
     public PaymentRecipient $recipient;
 
-    public array $metadata;
+    public MarketplaceData $marketplace;
 
-    public array $processing;
+    public ProcessingSettings $processing;
+
+    public array $metadata;
 
     public function jsonSerialize(): array
     {
         return CheckoutUtils::replaceArrayKey(get_object_vars($this), "three_ds", "3ds");
     }
+
 }

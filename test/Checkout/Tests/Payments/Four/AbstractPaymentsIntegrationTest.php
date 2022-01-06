@@ -1,6 +1,6 @@
 <?php
 
-namespace Checkout\Tests\Payments;
+namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
 use Checkout\Common\Address;
@@ -8,9 +8,14 @@ use Checkout\Common\Country;
 use Checkout\Common\Currency;
 use Checkout\Common\CustomerRequest;
 use Checkout\Common\Phone;
-use Checkout\Payments\PaymentRequest;
-use Checkout\Payments\Source\RequestCardSource;
-use Checkout\Payments\Source\RequestTokenSource;
+use Checkout\Payments\Four\Request\PaymentRequest;
+use Checkout\Payments\Four\Request\Source\RequestCardSource;
+use Checkout\Payments\Four\Request\Source\RequestTokenSource;
+use Checkout\Payments\Four\Sender\Identification;
+use Checkout\Payments\Four\Sender\IdentificationType;
+use Checkout\Payments\Four\Sender\PaymentCorporateSender;
+use Checkout\Payments\Four\Sender\PaymentIndividualSender;
+use Checkout\Payments\Four\Sender\PaymentInstrumentSender;
 use Checkout\Payments\ThreeDsRequest;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Tests\TestCardSource;
@@ -18,7 +23,6 @@ use Checkout\Tokens\CardTokenRequest;
 
 abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
 {
-
     protected string $idempotencyKey = "test.net";
 
     /**
@@ -30,7 +34,7 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
     protected function makeCardPayment(bool $shouldCapture = false, int $amount = 10)
     {
         $phone = $this->getPhone();
-        $billingAddress = $this->getAddress();
+        $address = $this->getAddress();
 
         $requestCardSource = new RequestCardSource();
         $requestCardSource->name = TestCardSource::$VisaName;
@@ -38,17 +42,35 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
         $requestCardSource->expiry_year = TestCardSource::$VisaExpiryYear;
         $requestCardSource->expiry_month = TestCardSource::$VisaExpiryMonth;
         $requestCardSource->cvv = TestCardSource::$VisaCvv;
-        $requestCardSource->billing_address = $billingAddress;
+        $requestCardSource->billing_address = $address;
         $requestCardSource->phone = $phone;
+
+        $customerRequest = new CustomerRequest();
+        $customerRequest->email = $this->randomEmail();
+        $customerRequest->name = "Customer";
+
+        $identification = new Identification();
+        $identification->issuing_country = Country::$GT;
+        $identification->number = "1234";
+        $identification->type = IdentificationType::$drivingLicence;
+
+        $paymentIndividualSender = new PaymentIndividualSender();
+        $paymentIndividualSender->fist_name = "Mr";
+        $paymentIndividualSender->last_name = "Test";
+        $paymentIndividualSender->address = $address;
+        $paymentIndividualSender->identification = $identification;
 
         $paymentRequest = new PaymentRequest();
         $paymentRequest->source = $requestCardSource;
         $paymentRequest->capture = $shouldCapture;
-        $paymentRequest->reference = uniqid("makeCardPayment");
+        $paymentRequest->reference = uniqid();
         $paymentRequest->amount = $amount;
-        $paymentRequest->currency = Currency::$GBP;
+        $paymentRequest->currency = Currency::$USD;
+        $paymentRequest->customer = $customerRequest;
+        $paymentRequest->sender = $paymentIndividualSender;
 
-        $paymentResponse = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest);
+        $paymentResponse = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest);
+
         $this->assertResponse($paymentResponse, "id");
         return $paymentResponse;
     }
@@ -59,20 +81,7 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
      */
     protected function makeTokenPayment()
     {
-        $phone = $this->getPhone();
-        $billingAddress = $this->getAddress();
-
-        $cardTokenRequest = new CardTokenRequest();
-        $cardTokenRequest->name = TestCardSource::$VisaName;
-        $cardTokenRequest->number = TestCardSource::$VisaNumber;
-        $cardTokenRequest->expiry_year = TestCardSource::$VisaExpiryYear;
-        $cardTokenRequest->expiry_month = TestCardSource::$VisaExpiryMonth;
-        $cardTokenRequest->cvv = TestCardSource::$VisaCvv;
-        $cardTokenRequest->billing_address = $billingAddress;
-        $cardTokenRequest->phone = $phone;
-
-        $cardTokenResponse = $this->defaultApi->getTokensClient()->requestCardToken($cardTokenRequest);
-        $this->assertResponse($cardTokenResponse, "token");
+        $cardTokenResponse = $this->requestToken();
 
         $requestTokenSource = new RequestTokenSource();
         $requestTokenSource->token = $cardTokenResponse["token"];
@@ -80,15 +89,18 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
         $customerRequest = new CustomerRequest();
         $customerRequest->email = $this->randomEmail();
 
+        $paymentInstrumentSender = new PaymentInstrumentSender();
+
         $paymentRequest = new PaymentRequest();
         $paymentRequest->source = $requestTokenSource;
         $paymentRequest->capture = true;
-        $paymentRequest->reference = uniqid("makeTokenPayment");
+        $paymentRequest->reference = uniqid();
         $paymentRequest->amount = 10;
         $paymentRequest->currency = Currency::$USD;
         $paymentRequest->customer = $customerRequest;
+        $paymentRequest->sender = $paymentInstrumentSender;
 
-        $paymentResponse = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest);
+        $paymentResponse = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest);
         $this->assertResponse($paymentResponse, "id");
 
         return $paymentResponse;
@@ -101,17 +113,14 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
      */
     protected function make3dsCardPayment(bool $attemptN3d = false)
     {
-        $phone = $this->getPhone();
-        $billingAddress = $this->getAddress();
-
         $requestCardSource = new RequestCardSource();
         $requestCardSource->name = TestCardSource::$VisaName;
         $requestCardSource->number = TestCardSource::$VisaNumber;
         $requestCardSource->expiry_year = TestCardSource::$VisaExpiryYear;
         $requestCardSource->expiry_month = TestCardSource::$VisaExpiryMonth;
         $requestCardSource->cvv = TestCardSource::$VisaCvv;
-        $requestCardSource->billing_address = $billingAddress;
-        $requestCardSource->phone = $phone;
+        $requestCardSource->billing_address = $this->getAddress();
+        $requestCardSource->phone = $this->getPhone();
 
         $threeDsRequest = new ThreeDsRequest();
         $threeDsRequest->enabled = true;
@@ -123,6 +132,11 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
 
         $customerRequest = new CustomerRequest();
         $customerRequest->email = $this->randomEmail();
+        $customerRequest->name = "Customer";
+
+        $paymentCorporateSender = new PaymentCorporateSender();
+        $paymentCorporateSender->company_name = "Testing Inc.";
+        $paymentCorporateSender->address = $this->getAddress();
 
         $paymentRequest = new PaymentRequest();
         $paymentRequest->source = $requestCardSource;
@@ -132,12 +146,36 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
         $paymentRequest->currency = Currency::$USD;
         $paymentRequest->customer = $customerRequest;
         $paymentRequest->three_ds = $threeDsRequest;
+        $paymentRequest->sender = $paymentCorporateSender;
+        $paymentRequest->success_url = "https://test.checkout.com/success";
+        $paymentRequest->failure_url = "https://test.checkout.com/failure";
 
-        $paymentResponse = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest);
-        self::assertNotNull($paymentResponse);
+        $paymentResponse = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest);
+        $this->assertResponse($paymentResponse, "id");
 
         return $paymentResponse;
 
+    }
+
+    /**
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    protected function requestToken()
+    {
+        $cardTokenRequest = new CardTokenRequest();
+        $cardTokenRequest->name = TestCardSource::$VisaName;
+        $cardTokenRequest->number = TestCardSource::$VisaNumber;
+        $cardTokenRequest->expiry_year = TestCardSource::$VisaExpiryYear;
+        $cardTokenRequest->expiry_month = TestCardSource::$VisaExpiryMonth;
+        $cardTokenRequest->cvv = TestCardSource::$VisaCvv;
+        $cardTokenRequest->billing_address = $this->getAddress();
+        $cardTokenRequest->phone = $this->getPhone();
+
+        $cardTokenResponse = $this->fourApi->getTokensClient()->requestCardToken($cardTokenRequest);
+        $this->assertResponse($cardTokenResponse, "token");
+
+        return $cardTokenResponse;
     }
 
     protected function getPhone(): Phone
