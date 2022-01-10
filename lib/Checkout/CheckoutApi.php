@@ -2,6 +2,7 @@
 
 namespace Checkout;
 
+use Checkout\Apm\CheckoutApmApi;
 use Checkout\Customers\CustomersClient;
 use Checkout\Events\EventsClient;
 use Checkout\Instruments\InstrumentsClient;
@@ -10,7 +11,7 @@ use Checkout\Sources\SourcesClient;
 use Checkout\Tokens\TokensClient;
 use Checkout\Webhooks\WebhooksClient;
 
-final class CheckoutApi
+final class CheckoutApi extends CheckoutApmApi
 {
     private SourcesClient $sourcesClient;
     private TokensClient $tokensClient;
@@ -22,6 +23,7 @@ final class CheckoutApi
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
+        parent::__construct($apiClient, $configuration);
         $this->sourcesClient = new SourcesClient($apiClient, $configuration);
         $this->tokensClient = new TokensClient($apiClient, $configuration);
         $this->instrumentsClient = new InstrumentsClient($apiClient, $configuration);
