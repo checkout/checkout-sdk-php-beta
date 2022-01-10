@@ -10,6 +10,7 @@ class PaymentSourceType
     public static string $token = "token";
     public static string $customer = "customer";
     public static string $dlocal = "dlocal";
+    public static string $klarna = "klarna";
     /*
     public static string $currency_account = "currency_account";
     public static string $baloto = "baloto";
@@ -20,7 +21,7 @@ class PaymentSourceType
     public static string $oxxo = "oxxo";
     public static string $pagofacil = "pagofacil";
     public static string $rapipago = "rapipago";
-    public static string $klarna = "klarna";
+
     public static string $sofort = "sofort";
     */
 }
