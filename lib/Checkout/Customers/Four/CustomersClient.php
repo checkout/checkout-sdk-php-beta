@@ -51,11 +51,10 @@ class CustomersClient extends Client
 
     /**
      * @param string $customerId
-     * @return mixed
      * @throws CheckoutApiException
      */
-    public function delete(string $customerId)
+    public function delete(string $customerId): void
     {
-        return $this->apiClient->delete($this->buildPath(self::CUSTOMERS_PATH, $customerId), $this->sdkAuthorization());
+        $this->apiClient->delete($this->buildPath(self::CUSTOMERS_PATH, $customerId), $this->sdkAuthorization());
     }
 }

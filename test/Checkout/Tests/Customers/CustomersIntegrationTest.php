@@ -83,7 +83,7 @@ class CustomersIntegrationTest extends SandboxTestFixture
         $this->defaultApi->getCustomersClient()->delete($id);
 
         $this->expectException(CheckoutApiException::class);
-        $this->expectExceptionMessage("The API response status code (404) does not indicate success.");
+        $this->expectExceptionMessage(self::MESSAGE_404);
         $this->defaultApi->getCustomersClient()->get($id);
     }
 

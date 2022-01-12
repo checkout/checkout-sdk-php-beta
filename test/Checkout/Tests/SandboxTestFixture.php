@@ -17,6 +17,8 @@ abstract class SandboxTestFixture extends TestCase
     protected CheckoutApi $defaultApi;
     protected \Checkout\Four\CheckoutApi $fourApi;
 
+    protected const MESSAGE_404 = "The API response status code (404) does not indicate success.";
+
     /**
      * @before
      * @throws CheckoutArgumentException

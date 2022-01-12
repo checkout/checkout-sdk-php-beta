@@ -69,17 +69,14 @@ class CustomersClientTest extends UnitTestFixture
 
     /**
      * @test
+     * @doesNotPerformAssertions
      * @throws CheckoutApiException
      */
     public function shouldDeleteCustomer(): void
     {
+        $this->apiClient->method('delete');
 
-        $this->apiClient
-            ->method('delete')
-            ->willReturn('foo');
-
-        $response = $this->client->delete("customer_id");
-        $this->assertNotNull($response);
+        $this->client->delete("customer_id");
     }
 
 }

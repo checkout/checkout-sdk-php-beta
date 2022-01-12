@@ -72,12 +72,11 @@ class WebhooksClient extends Client
 
     /**
      * @param string $webhookId
-     * @return mixed
      * @throws CheckoutApiException
      */
-    public function removeWebhook(string $webhookId)
+    public function removeWebhook(string $webhookId): void
     {
-        return $this->apiClient->delete($this->buildPath(self::WEBHOOKS_PATH, $webhookId), $this->sdkAuthorization());
+        $this->apiClient->delete($this->buildPath(self::WEBHOOKS_PATH, $webhookId), $this->sdkAuthorization());
     }
 
 }
