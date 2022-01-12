@@ -74,13 +74,11 @@ class ApiClient
     /**
      * @param string $path
      * @param SdkAuthorization $authorization
-     * @return mixed
      * @throws CheckoutApiException
      */
-    public function delete(string $path, SdkAuthorization $authorization)
+    public function delete(string $path, SdkAuthorization $authorization): void
     {
-        $response = $this->invoke("DELETE", $path, null, $authorization);
-        return json_decode($response->getBody(), true);
+        $this->invoke("DELETE", $path, null, $authorization);
     }
 
     /**

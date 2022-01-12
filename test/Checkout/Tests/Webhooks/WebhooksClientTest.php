@@ -100,16 +100,14 @@ class WebhooksClientTest extends UnitTestFixture
 
     /**
      * @test
+     * @doesNotPerformAssertions
      * @throws CheckoutApiException
      */
     public function shouldRemoveWebhook(): void
     {
-        $this->apiClient
-            ->method('delete')
-            ->willReturn('foo');
+        $this->apiClient->method('delete');
 
-        $response = $this->client->removeWebhook("webhook_id");
-        $this->assertNotNull($response);
+        $this->client->removeWebhook("webhook_id");
     }
 
 }

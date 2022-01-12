@@ -1,16 +1,18 @@
 <?php
 
-namespace Checkout\Instruments;
+namespace Checkout\Instruments\Four;
 
 use Checkout\ApiClient;
 use Checkout\AuthorizationType;
 use Checkout\CheckoutApiException;
 use Checkout\CheckoutConfiguration;
 use Checkout\Client;
+use Checkout\Instruments\Four\Create\CreateInstrumentRequest;
+use Checkout\Instruments\Four\Update\UpdateInstrumentRequest;
 
 class InstrumentsClient extends Client
 {
-    const INSTRUMENTS_PATH = "instruments";
+    private const INSTRUMENTS_PATH = "instruments";
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -56,5 +58,4 @@ class InstrumentsClient extends Client
     {
         $this->apiClient->delete($this->buildPath(self::INSTRUMENTS_PATH, $instrumentId), $this->sdkAuthorization());
     }
-
 }

@@ -85,7 +85,7 @@ class WebhooksIntegrationTest extends SandboxTestFixture
             $this->defaultApi->getWebhooksClient()->retrieveWebhook($webhookId);
             self::fail("shouldn't get here!");
         } catch (Exception $e) {
-            self::assertEquals("The API response status code (404) does not indicate success.", $e->getMessage());
+            self::assertEquals(self::MESSAGE_404, $e->getMessage());
         }
 
     }
