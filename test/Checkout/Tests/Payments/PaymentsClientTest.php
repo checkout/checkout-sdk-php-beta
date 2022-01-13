@@ -3,6 +3,7 @@
 namespace Checkout\Tests\Payments;
 
 use Checkout\CheckoutApiException;
+use Checkout\Common\Currency;
 use Checkout\Payments\CaptureRequest;
 use Checkout\Payments\PaymentRequest;
 use Checkout\Payments\PaymentsClient;
@@ -11,6 +12,7 @@ use Checkout\Payments\RefundRequest;
 use Checkout\Payments\VoidRequest;
 use Checkout\PlatformType;
 use Checkout\Tests\UnitTestFixture;
+
 
 class PaymentsClientTest extends UnitTestFixture
 {
@@ -40,6 +42,28 @@ class PaymentsClientTest extends UnitTestFixture
         $response = $this->client->requestPayment(new PaymentRequest());
         $this->assertNotNull($response);
     }
+
+    /**
+     * @test
+     * @throws CheckoutApiException
+     */
+    public function shouldRequestPayment_customSource(): void
+    {
+
+        $this->apiClient
+            ->method('post')
+            ->willReturn('foo');
+
+        $customSource = new CustomSource();
+        $customSource->amount = 10;
+        $customSource->currency = Currency::$USD;
+
+        $request = new PaymentRequest();
+        $request->source = $customSource;
+        $response = $this->client->requestPayment($request);
+        $this->assertNotNull($response);
+    }
+
 
     /**
      * @test
