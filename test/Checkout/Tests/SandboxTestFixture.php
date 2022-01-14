@@ -3,7 +3,6 @@
 namespace Checkout\Tests;
 
 use Checkout\CheckoutApi;
-use Checkout\CheckoutArgumentException;
 use Checkout\CheckoutDefaultSdk;
 use Checkout\CheckoutFourSdk;
 use Checkout\Environment;
@@ -19,7 +18,6 @@ abstract class SandboxTestFixture extends TestCase
 
     /**
      * @before
-     * @throws CheckoutArgumentException
      */
     public function initDefaultApi(): void
     {
