@@ -17,7 +17,7 @@ class CustomersClientTest extends UnitTestFixture
      */
     public function init(): void
     {
-        $this->initMocks(PlatformType::$default);
+        $this->initMocks(PlatformType::$four);
         $this->client = new CustomersClient($this->apiClient, $this->configuration);
     }
 

@@ -3,10 +3,20 @@
 namespace Checkout\Tests\Apm\Ideal;
 
 use Checkout\CheckoutApiException;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 
 class IdealIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
+
     /**
      * @test
      * @throws CheckoutApiException

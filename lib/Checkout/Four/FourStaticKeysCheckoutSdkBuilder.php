@@ -2,12 +2,12 @@
 
 namespace Checkout\Four;
 
-use Checkout\AbstractCheckoutSdkBuilder;
+use Checkout\AbstractStaticKeysCheckoutSdkBuilder;
 use Checkout\ApiClient;
 use Checkout\CheckoutConfiguration;
 use Checkout\SdkCredentialsInterface;
 
-class FourStaticKeysCheckoutSdkBuilder extends AbstractCheckoutSdkBuilder
+class FourStaticKeysCheckoutSdkBuilder extends AbstractStaticKeysCheckoutSdkBuilder
 {
     private const PUBLIC_KEY_PATTERN = "/^pk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";
     private const SECRET_KEY_PATTERN = "/^sk_(sbox_)?[a-z2-7]{26}[a-z2-7*#$=]$/";

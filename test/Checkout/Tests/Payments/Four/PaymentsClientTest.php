@@ -21,10 +21,9 @@ class PaymentsClientTest extends UnitTestFixture
      */
     public function init(): void
     {
-        $this->initMocks(PlatformType::$default);
+        $this->initMocks(PlatformType::$four);
         $this->client = new PaymentsClient($this->apiClient, $this->configuration);
     }
-
 
     /**
      * @test

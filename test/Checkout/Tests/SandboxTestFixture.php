@@ -3,9 +3,12 @@
 namespace Checkout\Tests;
 
 use Checkout\CheckoutApi;
+use Checkout\CheckoutAuthorizationException;
 use Checkout\CheckoutDefaultSdk;
 use Checkout\CheckoutFourSdk;
 use Checkout\Environment;
+use Checkout\FourOAuthScope;
+use Checkout\PlatformType;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
@@ -18,22 +21,37 @@ abstract class SandboxTestFixture extends TestCase
 
     protected const MESSAGE_404 = "The API response status code (404) does not indicate success.";
 
-    /**
-     * @before
-     */
-    public function initDefaultApi(): void
+    protected function init(string $platformType): void
     {
-        $builder = CheckoutDefaultSdk::staticKeys();
-        $builder->setPublicKey(getenv("CHECKOUT_PUBLIC_KEY"));
-        $builder->setSecretKey(getenv("CHECKOUT_SECRET_KEY"));
-        $builder->setEnvironment(Environment::sandbox());
-        $this->defaultApi = $builder->build();
+        switch ($platformType) {
+            case PlatformType::$default:
+                $builder = CheckoutDefaultSdk::staticKeys();
+                $builder->setPublicKey(getenv("CHECKOUT_PUBLIC_KEY"));
+                $builder->setSecretKey(getenv("CHECKOUT_SECRET_KEY"));
+                $builder->setEnvironment(Environment::sandbox());
+                $this->defaultApi = $builder->build();
+                return;
+            case PlatformType::$four:
+                $builder = CheckoutFourSdk::staticKeys();
+                $builder->setPublicKey(getenv("CHECKOUT_FOUR_PUBLIC_KEY"));
+                $builder->setSecretKey(getenv("CHECKOUT_FOUR_SECRET_KEY"));
+                $builder->setEnvironment(Environment::sandbox());
+                $this->fourApi = $builder->build();
+                return;
+            case PlatformType::$fourOAuth:
+                $builder = CheckoutFourSdk::oAuth();
+                $builder->clientCredentials(getenv("CHECKOUT_FOUR_OAUTH_CLIENT_ID"), getenv("CHECKOUT_FOUR_OAUTH_CLIENT_SECRET"));
+                $builder->scopes([FourOAuthScope::$Files, FourOAuthScope::$Flow, FourOAuthScope::$Fx, FourOAuthScope::$Gateway,
+                    FourOAuthScope::$Marketplace, FourOAuthScope::$SessionsApp, FourOAuthScope::$SessionsBrowser,
+                    FourOAuthScope::$Vault, FourOAuthScope::$PayoutsBankDetails]);
+                $builder->setEnvironment(Environment::sandbox());
+                $this->fourApi = $builder->build();
+                return;
+            default:
+                throw new CheckoutAuthorizationException("Invalid platform type");
+        }
 
-        $builder = CheckoutFourSdk::staticKeys();
-        $builder->setPublicKey(getenv("CHECKOUT_FOUR_PUBLIC_KEY"));
-        $builder->setSecretKey(getenv("CHECKOUT_FOUR_SECRET_KEY"));
-        $builder->setEnvironment(Environment::sandbox());
-        $this->fourApi = $builder->build();
+
     }
 
     protected function assertResponse($obj, ...$properties): void // @phpstan-ignore-line

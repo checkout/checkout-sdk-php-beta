@@ -2,6 +2,7 @@
 
 namespace Checkout\Tests\Events;
 
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertEquals;
@@ -10,6 +11,14 @@ use function PHPUnit\Framework\assertTrue;
 
 class EventsIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
 
     /**
      * @test

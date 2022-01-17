@@ -2,7 +2,6 @@
 
 namespace Checkout\Customers\Four;
 
-
 use Checkout\ApiClient;
 use Checkout\AuthorizationType;
 use Checkout\CheckoutApiException;
@@ -15,7 +14,7 @@ class CustomersClient extends Client
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
-        parent::__construct($apiClient, $configuration, AuthorizationType::$secretKey);
+        parent::__construct($apiClient, $configuration, AuthorizationType::$secretKeyOrOAuth);
     }
 
     /**

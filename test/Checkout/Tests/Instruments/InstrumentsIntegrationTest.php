@@ -11,12 +11,21 @@ use Checkout\Instruments\CreateInstrumentRequest;
 use Checkout\Instruments\InstrumentAccountHolder;
 use Checkout\Instruments\InstrumentCustomerRequest;
 use Checkout\Instruments\UpdateInstrumentRequest;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Tokens\CardTokenRequest;
 use Exception;
 
 class InstrumentsIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
 
     /**
      * @test
