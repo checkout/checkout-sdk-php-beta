@@ -7,10 +7,19 @@ use Checkout\Apm\Klarna\KlarnaProduct;
 use Checkout\CheckoutApiException;
 use Checkout\Common\Country;
 use Checkout\Common\Currency;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 
 class KlarnaIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
 
     /**
      * @test

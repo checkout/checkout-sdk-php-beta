@@ -16,7 +16,7 @@ class CheckoutAuthorizationException extends CheckoutException
      */
     public static function invalidAuthorization(string $authorizationType): CheckoutAuthorizationException
     {
-        return new CheckoutAuthorizationException("Operation requires " . $authorizationType . "authorization type");
+        return new CheckoutAuthorizationException("Operation requires " . $authorizationType . " authorization type");
     }
 
     /**

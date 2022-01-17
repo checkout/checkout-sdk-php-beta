@@ -2,6 +2,7 @@
 
 namespace Checkout\Tests\Webhooks;
 
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Webhooks\WebhookRequest;
 use Exception;
@@ -16,6 +17,7 @@ class WebhooksIntegrationTest extends SandboxTestFixture
      */
     public function cleanUp(): void
     {
+        $this->init(PlatformType::$default);
         $webhooks = $this->defaultApi->getWebhooksClient()->retrieveWebhooks();
         if (!$webhooks) {
             return;

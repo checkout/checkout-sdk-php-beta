@@ -5,10 +5,19 @@ namespace Checkout\Tests\Customers;
 use Checkout\CheckoutApiException;
 use Checkout\Common\Phone;
 use Checkout\Customers\CustomerRequest;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 
 class CustomersIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
 
     /**
      * @test

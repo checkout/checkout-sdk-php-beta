@@ -17,6 +17,7 @@ use Checkout\Payments\Four\Sender\PaymentCorporateSender;
 use Checkout\Payments\Four\Sender\PaymentIndividualSender;
 use Checkout\Payments\Four\Sender\PaymentInstrumentSender;
 use Checkout\Payments\ThreeDsRequest;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Tests\TestCardSource;
 use Checkout\Tokens\CardTokenRequest;
@@ -24,6 +25,14 @@ use Checkout\Tokens\CardTokenRequest;
 abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
 {
     protected string $idempotencyKey = "test.net";
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$four);
+    }
 
     /**
      * @param bool $shouldCapture

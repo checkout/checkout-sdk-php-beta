@@ -18,7 +18,7 @@ class PaymentsClient extends Client
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
-        parent::__construct($apiClient, $configuration, AuthorizationType::$secretKey);
+        parent::__construct($apiClient, $configuration, AuthorizationType::$secretKeyOrOAuth);
     }
 
     /**

@@ -25,12 +25,15 @@ final class SdkAuthorization
      */
     public function getAuthorizationHeader(): string
     {
-        if ($this->platformType == PlatformType::$default) {
-            return $this->credential;
+        switch ($this->platformType) {
+            case PlatformType::$default:
+            case PlatformType::$custom:
+                return $this->credential;
+            case PlatformType::$four:
+            case PlatformType::$fourOAuth:
+                return self::BEARER . $this->credential;
+            default:
+                throw new CheckoutAuthorizationException("Invalid platform type");
         }
-        if ($this->platformType == PlatformType::$four) {
-            return self::BEARER . $this->credential;
-        }
-        throw new CheckoutAuthorizationException("Invalid platform type");
     }
 }

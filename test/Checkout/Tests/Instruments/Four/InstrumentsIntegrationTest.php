@@ -10,10 +10,19 @@ use Checkout\Instruments\Four\Create\CreateTokenInstrumentRequest;
 use Checkout\Instruments\Four\Update\UpdateCardInstrumentRequest;
 use Checkout\Instruments\Four\Update\UpdateCustomerRequest;
 use Checkout\Instruments\Four\Update\UpdateTokenInstrumentRequest;
+use Checkout\PlatformType;
 use Checkout\Tests\Payments\Four\AbstractPaymentsIntegrationTest;
 
 class InstrumentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$four);
+    }
 
     /**
      * @test
@@ -127,7 +136,7 @@ class InstrumentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
         $this->expectException(CheckoutApiException::class);
         $this->expectExceptionMessage(self::MESSAGE_404);
-        $this->defaultApi->getInstrumentsClient()->get($tokenInstrument["id"]);
+        $this->fourApi->getInstrumentsClient()->get($tokenInstrument["id"]);
 
     }
 

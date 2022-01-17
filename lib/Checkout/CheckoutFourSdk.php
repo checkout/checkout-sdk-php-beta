@@ -13,6 +13,11 @@ class CheckoutFourSdk
         return new FourStaticKeysCheckoutSdkBuilder();
     }
 
+    public static function oAuth(): FourOAuthCheckoutSdkBuilder
+    {
+        return new FourOAuthCheckoutSdkBuilder();
+    }
+
 }
 
 

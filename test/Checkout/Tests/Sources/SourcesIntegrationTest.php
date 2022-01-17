@@ -5,12 +5,21 @@ namespace Checkout\Tests\Sources;
 use Checkout\Common\Address;
 use Checkout\Common\Country;
 use Checkout\Common\Phone;
+use Checkout\PlatformType;
 use Checkout\Sources\SepaSourceRequest;
 use Checkout\Sources\SourceData;
 use Checkout\Tests\SandboxTestFixture;
 
 class SourcesIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$default);
+    }
 
     /**
      * @test

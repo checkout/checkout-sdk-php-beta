@@ -5,11 +5,20 @@ namespace Checkout\Tests\Tokens\Four;
 use Checkout\Common\Address;
 use Checkout\Common\Country;
 use Checkout\Common\Phone;
+use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Tokens\CardTokenRequest;
 
 class TokensIntegrationTest extends SandboxTestFixture
 {
+
+    /**
+     * @before
+     */
+    public function before(): void
+    {
+        $this->init(PlatformType::$four);
+    }
 
     /**
      * @test
