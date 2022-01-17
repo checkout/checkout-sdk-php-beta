@@ -13,10 +13,13 @@ class ApiClient
 
     private ClientInterface $client;
 
+    private string $headerUserAgentVersion;
+
     public function __construct(CheckoutConfiguration $configuration)
     {
         $this->configuration = $configuration;
         $this->client = $configuration->getHttpClientBuilder()->getClient();
+        $this->headerUserAgentVersion = "checkout-sdk-php-beta/" . CheckoutUtils::getVersion();
     }
 
     /**
@@ -112,8 +115,9 @@ class ApiClient
     private function invoke(string $method, string $path, ?string $body, SdkAuthorization $authorization, string $idempotencyKey = null): ResponseInterface
     {
         try {
+
             $headers = [
-                "User-agent" => "checkout-sdk-php-beta/2.0.0",
+                "User-agent" => $this->headerUserAgentVersion,
                 "Content-Type" => "application/json",
                 "Accept" => "application/json",
                 "Authorization" => $authorization->getAuthorizationHeader()
