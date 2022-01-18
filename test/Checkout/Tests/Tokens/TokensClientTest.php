@@ -34,8 +34,8 @@ class TokensClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->requestCardToken(new CardTokenRequest());
         $this->assertNotNull($response);
@@ -49,8 +49,8 @@ class TokensClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->requestWalletToken(new ApplePayTokenRequest());
         $this->assertNotNull($response);

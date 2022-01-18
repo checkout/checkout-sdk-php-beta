@@ -28,7 +28,7 @@ abstract class Client
      */
     protected function buildPath(...$parts): string
     {
-        return join('/', $parts);
+        return join("/", $parts);
     }
 
 }

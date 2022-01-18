@@ -30,8 +30,8 @@ class SourcesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->createSepaSource(new SepaSourceRequest());
         $this->assertNotNull($response);

@@ -27,8 +27,8 @@ class SepaClientTest extends UnitTestFixture
     public function getMandate(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->getMandate("mandate_id");
         $this->assertNotNull($response);
@@ -41,8 +41,8 @@ class SepaClientTest extends UnitTestFixture
     public function cancelMandate(): void
     {
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->cancelMandate("mandate_id");
         $this->assertNotNull($response);
@@ -55,8 +55,8 @@ class SepaClientTest extends UnitTestFixture
     public function getMandateViaPPro(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->getMandateViaPPro("mandate_id");
         $this->assertNotNull($response);
@@ -69,8 +69,8 @@ class SepaClientTest extends UnitTestFixture
     public function cancelMandateViaPPro(): void
     {
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->cancelMandateViaPPro("mandate_id");
         $this->assertNotNull($response);

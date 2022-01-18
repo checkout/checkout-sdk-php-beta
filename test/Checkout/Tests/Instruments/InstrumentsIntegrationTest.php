@@ -46,7 +46,7 @@ class InstrumentsIntegrationTest extends SandboxTestFixture
         );
 
         // get
-        $this->assertResponse($this->defaultApi->getInstrumentsClient()->get($instrument['id']),
+        $this->assertResponse($this->defaultApi->getInstrumentsClient()->get($instrument["id"]),
             "id",
             "type",
             "expiry_month",
@@ -80,16 +80,16 @@ class InstrumentsIntegrationTest extends SandboxTestFixture
         $updateInstrumentRequest->name = "testing";
 
         // update
-        $this->assertResponse($this->defaultApi->getInstrumentsClient()->update($instrument['id'], $updateInstrumentRequest),
+        $this->assertResponse($this->defaultApi->getInstrumentsClient()->update($instrument["id"], $updateInstrumentRequest),
             "type",
             "fingerprint",
         );
 
         // delete
-        $this->defaultApi->getInstrumentsClient()->delete($instrument['id']);
+        $this->defaultApi->getInstrumentsClient()->delete($instrument["id"]);
 
         try {
-            $this->defaultApi->getInstrumentsClient()->delete($instrument['id']);
+            $this->defaultApi->getInstrumentsClient()->delete($instrument["id"]);
             self::fail("shouldn't get here!");
         } catch (Exception $e) {
             self::assertEquals(self::MESSAGE_404, $e->getMessage());
