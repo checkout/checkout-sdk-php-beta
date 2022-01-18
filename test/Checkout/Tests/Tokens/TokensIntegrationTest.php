@@ -54,12 +54,12 @@ class TokensIntegrationTest extends SandboxTestFixture
             "name",
             "last4",
             "bin",
-            "card_type",
-            "card_category",
-            "issuer",
-            "issuer_country",
-            "product_id",
-            "product_type"
+            //"card_type",
+            //"card_category",
+            //"issuer",
+            //"issuer_country",
+            //"product_id",
+            //"product_type"
         );
     }
 

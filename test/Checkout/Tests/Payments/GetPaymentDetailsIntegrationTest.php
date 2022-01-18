@@ -33,7 +33,7 @@ class GetPaymentDetailsIntegrationTest extends AbstractPaymentsIntegrationTest
             "source.id",
             "source.type",
             "source.fingerprint",
-            "source.card_type",
+            //"source.card_type",
             "customer.id",
             "customer.name");
     }

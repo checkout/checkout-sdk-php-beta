@@ -47,17 +47,17 @@ class RequestPayoutsIntegrationTest extends AbstractPaymentsIntegrationTest
         $this->assertResponse($payment,
             "destination",
             "destination.bin",
-            "destination.card_category",
-            "destination.card_type",
+            //"destination.card_category",
+            //"destination.card_type",
             "destination.expiry_month",
             "destination.expiry_year",
             "destination.last4",
             "destination.fingerprint",
-            "destination.name",
-            "destination.issuer",
-            "destination.issuer_country",
-            "destination.product_id",
-            "destination.product_type");
+            "destination.name");
+            //"destination.issuer",
+            //"destination.issuer_country",
+            //"destination.product_id",
+            //"destination.product_type"
     }
 
 
