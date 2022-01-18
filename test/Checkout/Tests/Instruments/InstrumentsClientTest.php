@@ -31,8 +31,8 @@ class InstrumentsClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->create(new CreateInstrumentRequest());
         $this->assertNotNull($response);
@@ -45,8 +45,8 @@ class InstrumentsClientTest extends UnitTestFixture
      */
     public function shouldGetInstrument(): void
     {
-        $this->apiClient->method('get')
-            ->willReturn('foo');
+        $this->apiClient->method("get")
+            ->willReturn("foo");
 
 
         $response = $this->client->get("instrument_id");
@@ -59,8 +59,8 @@ class InstrumentsClientTest extends UnitTestFixture
      */
     public function shouldUpdateInstrument(): void
     {
-        $this->apiClient->method('patch')
-            ->willReturn('foo');
+        $this->apiClient->method("patch")
+            ->willReturn("foo");
 
 
         $response = $this->client->update("instrument_id", new UpdateInstrumentRequest());
@@ -74,7 +74,7 @@ class InstrumentsClientTest extends UnitTestFixture
      */
     public function shouldDeleteInstruments(): void
     {
-        $this->apiClient->method('delete');
+        $this->apiClient->method("delete");
 
         $this->client->delete("instrument_id");
     }

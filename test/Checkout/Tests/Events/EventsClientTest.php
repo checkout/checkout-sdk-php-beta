@@ -29,8 +29,8 @@ class EventsClientTest extends UnitTestFixture
     public function shouldRetrieveAllEventTypes(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->retrieveAllEventTypes();
         $this->assertNotNull($response);
@@ -42,8 +42,8 @@ class EventsClientTest extends UnitTestFixture
      */
     public function shouldRetrieveEvents(): void
     {
-        $this->apiClient->method('query')
-            ->willReturn('foo');
+        $this->apiClient->method("query")
+            ->willReturn("foo");
 
         $response = $this->client->retrieveEvents(new RetrieveEventsRequest());
         $this->assertNotNull($response);
@@ -55,8 +55,8 @@ class EventsClientTest extends UnitTestFixture
      */
     public function shouldRetrieveEvent(): void
     {
-        $this->apiClient->method('get')
-            ->willReturn('foo');
+        $this->apiClient->method("get")
+            ->willReturn("foo");
 
 
         $response = $this->client->retrieveEvent("event_id");
@@ -69,8 +69,8 @@ class EventsClientTest extends UnitTestFixture
      */
     public function shouldRetrieveEventNotification(): void
     {
-        $this->apiClient->method('get')
-            ->willReturn('foo');
+        $this->apiClient->method("get")
+            ->willReturn("foo");
 
 
         $response = $this->client->retrieveEventNotification("event_id", "notification_id");
@@ -83,8 +83,8 @@ class EventsClientTest extends UnitTestFixture
      */
     public function shouldRetryWebhook(): void
     {
-        $this->apiClient->method('post')
-            ->willReturn('foo');
+        $this->apiClient->method("post")
+            ->willReturn("foo");
 
 
         $response = $this->client->retryWebhook("event_id", "webhook_id");
@@ -97,8 +97,8 @@ class EventsClientTest extends UnitTestFixture
      */
     public function shouldRetryAllWebhooks(): void
     {
-        $this->apiClient->method('post')
-            ->willReturn('foo');
+        $this->apiClient->method("post")
+            ->willReturn("foo");
 
 
         $response = $this->client->retryAllWebhooks("event_id");

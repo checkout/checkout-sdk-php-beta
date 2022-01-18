@@ -35,8 +35,8 @@ class WebhooksClientTest extends UnitTestFixture
     public function shouldRetrieveWebhooks(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->retrieveWebhooks();
         $this->assertNotNull($response);
@@ -49,8 +49,8 @@ class WebhooksClientTest extends UnitTestFixture
     public function shouldRetrieveWebhook(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->retrieveWebhook("webhook_id");
         $this->assertNotNull($response);
@@ -63,8 +63,8 @@ class WebhooksClientTest extends UnitTestFixture
     public function shouldRegisterWebhook(): void
     {
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->registerWebhook(new WebhookRequest());
         $this->assertNotNull($response);
@@ -77,8 +77,8 @@ class WebhooksClientTest extends UnitTestFixture
     public function shouldUpdateWebhook(): void
     {
         $this->apiClient
-            ->method('put')
-            ->willReturn('foo');
+            ->method("put")
+            ->willReturn("foo");
 
         $response = $this->client->updateWebhook("webhook_id", new WebhookRequest());
         $this->assertNotNull($response);
@@ -91,8 +91,8 @@ class WebhooksClientTest extends UnitTestFixture
     public function shouldPatchWebhook(): void
     {
         $this->apiClient
-            ->method('patch')
-            ->willReturn('foo');
+            ->method("patch")
+            ->willReturn("foo");
 
         $response = $this->client->patchWebhook("webhook_id", new WebhookRequest());
         $this->assertNotNull($response);
@@ -105,7 +105,7 @@ class WebhooksClientTest extends UnitTestFixture
      */
     public function shouldRemoveWebhook(): void
     {
-        $this->apiClient->method('delete');
+        $this->apiClient->method("delete");
 
         $this->client->removeWebhook("webhook_id");
     }

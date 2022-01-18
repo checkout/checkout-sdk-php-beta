@@ -30,8 +30,8 @@ class CustomersClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->get("customer_id");
         $this->assertNotNull($response);
@@ -45,8 +45,8 @@ class CustomersClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->create(new CustomerRequest());
         $this->assertNotNull($response);
@@ -60,8 +60,8 @@ class CustomersClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('patch')
-            ->willReturn('foo');
+            ->method("patch")
+            ->willReturn("foo");
 
         $response = $this->client->update("customer_id", new CustomerRequest());
         $this->assertNotNull($response);
@@ -74,7 +74,7 @@ class CustomersClientTest extends UnitTestFixture
      */
     public function shouldDeleteCustomer(): void
     {
-        $this->apiClient->method('delete');
+        $this->apiClient->method("delete");
 
         $this->client->delete("customer_id");
     }
