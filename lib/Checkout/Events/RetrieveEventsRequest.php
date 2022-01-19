@@ -2,9 +2,10 @@
 
 namespace Checkout\Events;
 
+use Checkout\Common\AbstractQueryFilter;
 use DateTime;
 
-class RetrieveEventsRequest
+class RetrieveEventsRequest extends AbstractQueryFilter
 {
     public string $payment_id;
 

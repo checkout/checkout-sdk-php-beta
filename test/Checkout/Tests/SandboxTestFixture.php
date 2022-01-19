@@ -85,4 +85,9 @@ abstract class SandboxTestFixture extends TestCase
         return uniqid() . "@checkout-sdk-net.com";
     }
 
+    public static function getCheckoutFilePath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "checkout.jpeg";
+    }
+
 }

@@ -2,6 +2,8 @@
 
 namespace Checkout;
 
+use Checkout\Common\AbstractQueryFilter;
+use Checkout\Files\FileRequest;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
@@ -15,6 +17,10 @@ class ApiClient
 
     private string $headerUserAgentVersion;
 
+    /**
+     * @param CheckoutConfiguration $configuration
+     * @throws CheckoutApiException
+     */
     public function __construct(CheckoutConfiguration $configuration)
     {
         $this->configuration = $configuration;
@@ -86,21 +92,52 @@ class ApiClient
 
     /**
      * @param string $path
-     * @param mixed $body
+     * @param AbstractQueryFilter $body
      * @param SdkAuthorization $authorization
      * @return mixed
      * @throws CheckoutApiException
      */
-    public function query(string $path, $body, SdkAuthorization $authorization)
+    public function query(string $path, AbstractQueryFilter $body, SdkAuthorization $authorization)
     {
-        if (!is_null($body)) {
-            $query = http_build_query($body);
-            if (empty($body)) {
-                $path = $path . "?" . $query;
-            }
+        $queryParameters = $body->getEncodedQueryParameters();
+        if (!empty($queryParameters)) {
+            $path .= "?" . $queryParameters;
         }
         $response = $this->invoke("GET", $path, null, $authorization);
         return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * @param string $path
+     * @param FileRequest $fileRequest
+     * @param SdkAuthorization $authorization
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    public function submitFile(string $path, FileRequest $fileRequest, SdkAuthorization $authorization)
+    {
+        try {
+            $headers = $this->getHeaders($authorization, null, null);
+            $response = $this->client->request("POST", $this->getRequestUrl($path), [
+                "verify" => false,
+                "headers" => $headers,
+                "multipart" => [
+                    [
+                        'name' => 'file',
+                        'contents' => fopen($fileRequest->file, "r")
+                    ],
+                    [
+                        'name' => 'purpose',
+                        'contents' => $fileRequest->purpose
+                    ]
+                ]]);
+            return json_decode($response->getBody(), true);
+        } catch (Throwable $e) {
+            if ($e instanceof ClientException) {
+                throw new CheckoutApiException("The API response status code (" . $e->getCode() . ") does not indicate success.");
+            }
+            throw new CheckoutApiException($e);
+        }
     }
 
     /**
@@ -115,16 +152,7 @@ class ApiClient
     private function invoke(string $method, string $path, ?string $body, SdkAuthorization $authorization, string $idempotencyKey = null): ResponseInterface
     {
         try {
-
-            $headers = [
-                "User-agent" => $this->headerUserAgentVersion,
-                "Content-Type" => "application/json",
-                "Accept" => "application/json",
-                "Authorization" => $authorization->getAuthorizationHeader()
-            ];
-            if ($idempotencyKey) {
-                $headers["Cko-Idempotency-Key"] = $idempotencyKey;
-            }
+            $headers = $this->getHeaders($authorization, "application/json", $idempotencyKey);
             return $this->client->request($method, $this->getRequestUrl($path), [
                 "verify" => false,
                 "body" => $body,
@@ -141,6 +169,30 @@ class ApiClient
     private function getRequestUrl(string $path): string
     {
         return $this->configuration->getEnvironment()->getBaseUri() . $path;
+    }
+
+
+    /**
+     * @param SdkAuthorization $authorization
+     * @param string|null $contentType
+     * @param string|null $idempotencyKey
+     * @return array
+     * @throws CheckoutAuthorizationException
+     */
+    private function getHeaders(SdkAuthorization $authorization, ?string $contentType, ?string $idempotencyKey): array
+    {
+        $headers = [
+            "User-agent" => $this->headerUserAgentVersion,
+            "Accept" => "application/json",
+            "Authorization" => $authorization->getAuthorizationHeader()
+        ];
+        if (!empty($contentType)) {
+            $headers["Content-Type"] = $contentType;
+        }
+        if (!empty($idempotencyKey)) {
+            $headers["Cko-Idempotency-Key"] = $idempotencyKey;
+        }
+        return $headers;
     }
 
 }

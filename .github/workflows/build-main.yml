@@ -6,10 +6,12 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
         strategy:
+            max-parallel: 1
             fail-fast: false
             matrix:
+                os: [ ubuntu-latest, windows-latest ]
                 php-versions: [ '7.4' ]
 
         steps:
@@ -18,6 +20,7 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php-versions }}
+                    extensions: fileinfo
                     coverage: none
             -   name: Installed versions
                 run: php -v
