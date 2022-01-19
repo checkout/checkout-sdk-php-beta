@@ -5,6 +5,7 @@ namespace Checkout\Four;
 use Checkout\ApiClient;
 use Checkout\CheckoutConfiguration;
 use Checkout\Customers\Four\CustomersClient;
+use Checkout\Disputes\DisputesClient;
 use Checkout\Forex\ForexClient;
 use Checkout\Instruments\Four\InstrumentsClient;
 use Checkout\Payments\Four\PaymentsClient;
@@ -17,6 +18,7 @@ final class CheckoutApi
     private PaymentsClient $paymentsClient;
     private InstrumentsClient $instrumentsClient;
     private ForexClient $forexClient;
+    private DisputesClient $disputesClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -25,6 +27,7 @@ final class CheckoutApi
         $this->paymentsClient = new PaymentsClient($apiClient, $configuration);
         $this->instrumentsClient = new InstrumentsClient($apiClient, $configuration);
         $this->forexClient = new ForexClient($apiClient, $configuration);
+        $this->disputesClient = new DisputesClient($apiClient, $configuration);
     }
 
     public function getTokensClient(): TokensClient
@@ -50,6 +53,11 @@ final class CheckoutApi
     public function getForexClient(): ForexClient
     {
         return $this->forexClient;
+    }
+
+    public function getDisputesClient(): DisputesClient
+    {
+        return $this->disputesClient;
     }
 
 }

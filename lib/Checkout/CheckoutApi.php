@@ -4,6 +4,7 @@ namespace Checkout;
 
 use Checkout\Apm\CheckoutApmApi;
 use Checkout\Customers\CustomersClient;
+use Checkout\Disputes\DisputesClient;
 use Checkout\Events\EventsClient;
 use Checkout\Instruments\InstrumentsClient;
 use Checkout\Payments\PaymentsClient;
@@ -20,6 +21,7 @@ final class CheckoutApi extends CheckoutApmApi
     private EventsClient $eventsClient;
     private PaymentsClient $paymentsClient;
     private CustomersClient $customersClient;
+    private DisputesClient $disputesClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -31,6 +33,7 @@ final class CheckoutApi extends CheckoutApmApi
         $this->eventsClient = new EventsClient($apiClient, $configuration);
         $this->paymentsClient = new PaymentsClient($apiClient, $configuration);
         $this->customersClient = new CustomersClient($apiClient, $configuration);
+        $this->disputesClient = new DisputesClient($apiClient, $configuration);
     }
 
     public function getSourcesClient(): SourcesClient
@@ -66,6 +69,11 @@ final class CheckoutApi extends CheckoutApmApi
     public function getCustomersClient(): CustomersClient
     {
         return $this->customersClient;
+    }
+
+    public function getDisputesClient(): DisputesClient
+    {
+        return $this->disputesClient;
     }
 
 }

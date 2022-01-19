@@ -2,7 +2,6 @@
 
 namespace Checkout\Payments\Source\Apm;
 
-use Checkout\Common\Address;
 use Checkout\Common\PaymentSourceType;
 use Checkout\Payments\Source\AbstractRequestSource;
 
