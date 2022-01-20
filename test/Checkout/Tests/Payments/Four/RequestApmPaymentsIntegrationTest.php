@@ -7,8 +7,6 @@ use Checkout\Common\Currency;
 use Checkout\Payments\Four\Request\PaymentRequest;
 use Checkout\Payments\Four\Request\Source\Apm\RequestIdealSource;
 use Checkout\Payments\Four\Request\Source\Apm\RequestSofortSource;
-use Checkout\Payments\Four\Request\Source\RequestCardSource;
-use Checkout\Tests\TestCardSource;
 
 class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -35,22 +33,23 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
         self::assertResponse($paymentResponse1,
             "id",
-            "amount",
-            "currency",
             "status",
-            "response_code",
-            "response_summary",
             "_links",
-            "_links.self");
+            "_links.self",
+            "_links.redirect");
 
         $paymentResponse2 = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
 
         self::assertResponse($paymentResponse2,
-            "status",
-            "_links",
-            "_links.self",
+            "id",
+            "requested_on",
             "source",
-            "source.type");
+            "amount",
+            "balances",
+            "currency",
+            "payment_type",
+            "status",
+            "approved");
     }
 
     /**
@@ -72,20 +71,22 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
         self::assertResponse($paymentResponse1,
             "id",
-            "amount",
-            "currency",
-            "status",
-            "response_code",
-            "response_summary",
-            "_links",
-            "_links.self");
-
-        $paymentResponse2 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse2,
             "status",
             "_links",
             "_links.self",
+            "_links.redirect");
+
+        $paymentResponse2 = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+
+        self::assertResponse($paymentResponse2,
+            "id",
+            "requested_on",
             "source",
-            "source.type");
+            "amount",
+            "balances",
+            "currency",
+            "payment_type",
+            "status",
+            "approved");
     }
 }
