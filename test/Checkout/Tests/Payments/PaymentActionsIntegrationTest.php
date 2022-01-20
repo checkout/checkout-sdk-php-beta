@@ -13,6 +13,7 @@ class PaymentActionsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldGetPaymentActions(): void
     {
+        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment(true);
 
         $this->nap();

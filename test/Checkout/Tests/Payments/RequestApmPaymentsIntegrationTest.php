@@ -30,6 +30,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldMakeBalotoPayment(): void
     {
+        $this->markTestSkipped("unstable");
         $requestSource = new RequestBalotoSource();
         $requestSource->country = Country::$CO;
         $requestSource->description = "simulate Via Baloto Demo Payment";

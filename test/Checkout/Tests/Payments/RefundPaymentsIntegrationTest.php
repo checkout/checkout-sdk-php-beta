@@ -14,6 +14,7 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldRefundCardPayment(): void
     {
+        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment(true);
 
         $this->nap();
@@ -34,6 +35,7 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldRefundCardPaymentIdempotent(): void
     {
+        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment(true);
 
         $this->nap();

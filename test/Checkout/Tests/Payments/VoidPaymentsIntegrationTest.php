@@ -14,6 +14,7 @@ class VoidPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldVoidCardPayment(): void
     {
+        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment();
 
         $voidRequest = new VoidRequest();
@@ -31,6 +32,7 @@ class VoidPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldVoidCardPayment_Idempotent(): void
     {
+        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment();
 
         $voidRequest = new VoidRequest();
