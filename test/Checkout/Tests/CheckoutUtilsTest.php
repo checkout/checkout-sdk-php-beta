@@ -15,19 +15,6 @@ class CheckoutUtilsTest extends TestCase
 
     /**
      * @test
-     */
-    public static function shouldReplaceArrayKey(): void
-    {
-        $arr = [
-            'three_ds' => 'aValue',
-        ];
-        $newArray = CheckoutUtils::replaceArrayKey($arr, "three_ds", "3ds");
-        assertNotNull($newArray);
-        self::assertArrayHasKey("3ds", $newArray);
-    }
-
-    /**
-     * @test
      * @throws CheckoutApiException
      */
     public static function shouldGetVersion(): void

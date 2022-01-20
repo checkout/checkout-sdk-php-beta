@@ -21,6 +21,7 @@ use Checkout\PlatformType;
 use Checkout\Tests\SandboxTestFixture;
 use Checkout\Tests\TestCardSource;
 use Checkout\Tokens\CardTokenRequest;
+use DateTime;
 
 abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
 {
@@ -40,7 +41,7 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
      * @return mixed
      * @throws CheckoutApiException
      */
-    protected function makeCardPayment(bool $shouldCapture = false, int $amount = 10)
+    protected function makeCardPayment(bool $shouldCapture = false, int $amount = 10, ?DateTime $captureOn = null)
     {
         $phone = $this->getPhone();
         $address = $this->getAddress();
@@ -77,6 +78,10 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
         $paymentRequest->currency = Currency::$USD;
         $paymentRequest->customer = $customerRequest;
         $paymentRequest->sender = $paymentIndividualSender;
+
+        if (!is_null($captureOn)) {
+            $paymentRequest->capture_on = $captureOn;
+        }
 
         $paymentResponse = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest);
 

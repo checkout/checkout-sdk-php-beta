@@ -7,6 +7,7 @@ use Checkout\Common\Currency;
 use Checkout\Payments\Destination\PaymentRequestCardDestination;
 use Checkout\Payments\PayoutRequest;
 use Checkout\Tests\TestCardSource;
+use DateTime;
 
 class RequestPayoutsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -33,6 +34,7 @@ class RequestPayoutsIntegrationTest extends AbstractPaymentsIntegrationTest
         $payoutRequest->reference = uniqid();
         $payoutRequest->amount = 5;
         $payoutRequest->currency = Currency::$USD;
+        $payoutRequest->capture_on = new DateTime();
 
         $paymentResponse = $this->defaultApi->getPaymentsClient()->requestPayout($payoutRequest);
 
