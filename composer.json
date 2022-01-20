@@ -1,8 +1,8 @@
 {
     "name": "checkout/checkout-sdk-php",
     "description": "Checkout.com SDK for PHP",
-    "homepage": "https://github.com/checkout/checkout-sdk-php",
-    "version": "2.0.0",
+    "homepage": "https://github.com/checkout/checkout-sdk-php-beta",
+    "version": "2.0.0-beta1",
     "type": "library",
     "license": "MIT",
     "keywords": [
