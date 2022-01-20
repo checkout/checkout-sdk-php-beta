@@ -15,6 +15,8 @@ class ApiClient
 
     private ClientInterface $client;
 
+    private JsonSerializer $jsonSerializer;
+
     private string $headerUserAgentVersion;
 
     /**
@@ -25,6 +27,7 @@ class ApiClient
     {
         $this->configuration = $configuration;
         $this->client = $configuration->getHttpClientBuilder()->getClient();
+        $this->jsonSerializer = new JsonSerializer();
         $this->headerUserAgentVersion = "checkout-sdk-php-beta/" . CheckoutUtils::getVersion();
     }
 
@@ -37,7 +40,7 @@ class ApiClient
     public function get(string $path, SdkAuthorization $authorization)
     {
         $response = $this->invoke("GET", $path, null, $authorization);
-        return json_decode($response->getBody(), true);
+        return $this->jsonSerializer->deserialize($response->getBody());
     }
 
     /**
@@ -50,8 +53,8 @@ class ApiClient
      */
     public function post(string $path, $body, SdkAuthorization $authorization, string $idempotencyKey = null)
     {
-        $response = $this->invoke("POST", $path, json_encode($body), $authorization, $idempotencyKey);
-        return json_decode($response->getBody(), true);
+        $response = $this->invoke("POST", $path, $this->jsonSerializer->serialize($body), $authorization, $idempotencyKey);
+        return $this->jsonSerializer->deserialize($response->getBody());
     }
 
     /**
@@ -63,8 +66,8 @@ class ApiClient
      */
     public function put(string $path, $body, SdkAuthorization $authorization)
     {
-        $response = $this->invoke("PUT", $path, json_encode($body), $authorization);
-        return json_decode($response->getBody(), true);
+        $response = $this->invoke("PUT", $path, $this->jsonSerializer->serialize($body), $authorization);
+        return $this->jsonSerializer->deserialize($response->getBody());
     }
 
     /**
@@ -76,8 +79,8 @@ class ApiClient
      */
     public function patch(string $path, $body, SdkAuthorization $authorization)
     {
-        $response = $this->invoke("PATCH", $path, json_encode($body), $authorization);
-        return json_decode($response->getBody(), true);
+        $response = $this->invoke("PATCH", $path, $this->jsonSerializer->serialize($body), $authorization);
+        return $this->jsonSerializer->deserialize($response->getBody());
     }
 
     /**
@@ -104,7 +107,7 @@ class ApiClient
             $path .= "?" . $queryParameters;
         }
         $response = $this->invoke("GET", $path, null, $authorization);
-        return json_decode($response->getBody(), true);
+        return $this->jsonSerializer->deserialize($response->getBody());
     }
 
     /**

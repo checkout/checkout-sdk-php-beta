@@ -2,7 +2,6 @@
 
 namespace Checkout\Payments\Four\Request;
 
-use Checkout\CheckoutUtils;
 use Checkout\Common\CustomerRequest;
 use Checkout\Common\MarketplaceData;
 use Checkout\Payments\Four\Request\Source\AbstractRequestSource;
@@ -13,9 +12,8 @@ use Checkout\Payments\RiskRequest;
 use Checkout\Payments\ShippingDetails;
 use Checkout\Payments\ThreeDsRequest;
 use DateTime;
-use JsonSerializable;
 
-class PaymentRequest implements JsonSerializable
+class PaymentRequest
 {
     public AbstractRequestSource $source;
 
@@ -65,10 +63,5 @@ class PaymentRequest implements JsonSerializable
     public ProcessingSettings $processing;
 
     public array $metadata;
-
-    public function jsonSerialize(): array
-    {
-        return CheckoutUtils::replaceArrayKey(get_object_vars($this), "three_ds", "3ds");
-    }
 
 }

@@ -2,13 +2,11 @@
 
 namespace Checkout\Payments;
 
-use Checkout\CheckoutUtils;
 use Checkout\Common\CustomerRequest;
 use Checkout\Payments\Source\AbstractRequestSource;
 use DateTime;
-use JsonSerializable;
 
-class PaymentRequest implements JsonSerializable
+class PaymentRequest
 {
     public AbstractRequestSource $source;
 
@@ -52,8 +50,4 @@ class PaymentRequest implements JsonSerializable
 
     public array $processing;
 
-    public function jsonSerialize(): array
-    {
-        return CheckoutUtils::replaceArrayKey(get_object_vars($this), "three_ds", "3ds");
-    }
 }

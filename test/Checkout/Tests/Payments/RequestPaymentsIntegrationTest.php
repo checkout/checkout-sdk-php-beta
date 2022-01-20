@@ -7,6 +7,7 @@ use Checkout\Common\Currency;
 use Checkout\Payments\PaymentRequest;
 use Checkout\Payments\Source\RequestCardSource;
 use Checkout\Tests\TestCardSource;
+use DateTime;
 
 class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -17,7 +18,7 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldMakeCardPayment(): void
     {
-        $paymentResponse = $this->makeCardPayment();
+        $paymentResponse = $this->makeCardPayment(true, 10, new DateTime());
 
         $this->assertResponse($paymentResponse,
             "id",
