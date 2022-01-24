@@ -2,6 +2,8 @@
 
 namespace Checkout;
 
+use Psr\Log\LoggerInterface;
+
 final class CheckoutConfiguration
 {
     private SdkCredentialsInterface $sdkCredentials;
@@ -10,13 +12,17 @@ final class CheckoutConfiguration
 
     private HttpClientBuilderInterface $httpClientBuilder;
 
+    private LoggerInterface $logger;
+
     public function __construct(SdkCredentialsInterface    $sdkCredentials,
                                 Environment                $environment,
-                                HttpClientBuilderInterface $httpClientBuilder)
+                                HttpClientBuilderInterface $httpClientBuilder,
+                                LoggerInterface            $logger)
     {
         $this->sdkCredentials = $sdkCredentials;
         $this->environment = $environment;
         $this->httpClientBuilder = $httpClientBuilder;
+        $this->logger = $logger;
     }
 
     public function getSdkCredentials(): SdkCredentialsInterface
@@ -34,4 +40,8 @@ final class CheckoutConfiguration
         return $this->httpClientBuilder;
     }
 
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
 }

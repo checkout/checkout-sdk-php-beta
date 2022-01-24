@@ -9,6 +9,9 @@ use Checkout\HttpClientBuilderInterface;
 use Checkout\SdkAuthorization;
 use Checkout\SdkCredentialsInterface;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 
 abstract class UnitTestFixture extends MockeryTestCase
 {
@@ -44,9 +47,15 @@ abstract class UnitTestFixture extends MockeryTestCase
 
         $httpBuilder = $this->createMock(HttpClientBuilderInterface::class);
 
-        $this->configuration = new CheckoutConfiguration($sdkCredentials, Environment::sandbox(), $httpBuilder);
+        $checkoutLog =  new Logger("checkout-sdk-test-php");
+        $checkoutLog->pushHandler(new StreamHandler('php://stderr'));
+        $checkoutLog->pushHandler(new StreamHandler('checkout-sdk-test-php.log'));
+
+        $this->configuration = new CheckoutConfiguration($sdkCredentials, Environment::sandbox(), $httpBuilder, $checkoutLog);
 
         $this->apiClient = $this->createStub(ApiClient::class);
+
+        $checkoutLog->info("Unit tests are starting");
     }
 
 }
