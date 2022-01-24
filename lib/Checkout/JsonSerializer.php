@@ -55,5 +55,4 @@ class JsonSerializer
         return json_decode($object, true);
     }
 
-
 }

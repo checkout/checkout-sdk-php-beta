@@ -7,10 +7,12 @@ use Checkout\Files\FileRequest;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 class ApiClient
 {
+
     private CheckoutConfiguration $configuration;
 
     private ClientInterface $client;
@@ -18,6 +20,8 @@ class ApiClient
     private JsonSerializer $jsonSerializer;
 
     private string $headerUserAgentVersion;
+
+    private LoggerInterface $logger;
 
     /**
      * @param CheckoutConfiguration $configuration
@@ -29,6 +33,7 @@ class ApiClient
         $this->client = $configuration->getHttpClientBuilder()->getClient();
         $this->jsonSerializer = new JsonSerializer();
         $this->headerUserAgentVersion = "checkout-sdk-php-beta/" . CheckoutUtils::getVersion();
+        $this->logger = $this->configuration->getLogger();
     }
 
     /**
@@ -102,6 +107,7 @@ class ApiClient
      */
     public function query(string $path, AbstractQueryFilter $body, SdkAuthorization $authorization)
     {
+        $this->logger->info("GET " . $path);
         $queryParameters = $body->getEncodedQueryParameters();
         if (!empty($queryParameters)) {
             $path .= "?" . $queryParameters;
@@ -120,22 +126,24 @@ class ApiClient
     public function submitFile(string $path, FileRequest $fileRequest, SdkAuthorization $authorization)
     {
         try {
+            $this->logger->info("POST " . $path . " file: " . $fileRequest->file);
             $headers = $this->getHeaders($authorization, null, null);
             $response = $this->client->request("POST", $this->getRequestUrl($path), [
                 "verify" => false,
                 "headers" => $headers,
                 "multipart" => [
                     [
-                        'name' => 'file',
-                        'contents' => fopen($fileRequest->file, "r")
+                        "name" => "file",
+                        "contents" => fopen($fileRequest->file, "r")
                     ],
                     [
-                        'name' => 'purpose',
-                        'contents' => $fileRequest->purpose
+                        "name" => "purpose",
+                        "contents" => $fileRequest->purpose
                     ]
                 ]]);
             return json_decode($response->getBody(), true);
         } catch (Throwable $e) {
+            $this->logger->error($path . " error: " . $e->getMessage());
             if ($e instanceof ClientException) {
                 throw new CheckoutApiException("The API response status code (" . $e->getCode() . ") does not indicate success.");
             }
@@ -155,6 +163,7 @@ class ApiClient
     private function invoke(string $method, string $path, ?string $body, SdkAuthorization $authorization, string $idempotencyKey = null): ResponseInterface
     {
         try {
+            $this->logger->info($method . " " . $path);
             $headers = $this->getHeaders($authorization, "application/json", $idempotencyKey);
             return $this->client->request($method, $this->getRequestUrl($path), [
                 "verify" => false,
@@ -162,6 +171,7 @@ class ApiClient
                 "headers" => $headers
             ]);
         } catch (Throwable $e) {
+            $this->logger->error($path . " error: " . $e->getMessage());
             if ($e instanceof ClientException) {
                 throw new CheckoutApiException("The API response status code (" . $e->getCode() . ") does not indicate success.");
             }

@@ -9,6 +9,8 @@ use Checkout\CheckoutFourSdk;
 use Checkout\Environment;
 use Checkout\FourOAuthScope;
 use Checkout\PlatformType;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
@@ -23,12 +25,16 @@ abstract class SandboxTestFixture extends TestCase
 
     protected function init(string $platformType): void
     {
+        $checkoutLog = new Logger("checkout-sdk-test-php");
+        $checkoutLog->pushHandler(new StreamHandler("php://stderr"));
+        $checkoutLog->pushHandler(new StreamHandler("checkout-sdk-test-php.log"));
         switch ($platformType) {
             case PlatformType::$default:
                 $builder = CheckoutDefaultSdk::staticKeys();
                 $builder->setPublicKey(getenv("CHECKOUT_PUBLIC_KEY"));
                 $builder->setSecretKey(getenv("CHECKOUT_SECRET_KEY"));
                 $builder->setEnvironment(Environment::sandbox());
+                $builder->setLogger($checkoutLog);
                 $this->defaultApi = $builder->build();
                 return;
             case PlatformType::$four:
@@ -36,6 +42,7 @@ abstract class SandboxTestFixture extends TestCase
                 $builder->setPublicKey(getenv("CHECKOUT_FOUR_PUBLIC_KEY"));
                 $builder->setSecretKey(getenv("CHECKOUT_FOUR_SECRET_KEY"));
                 $builder->setEnvironment(Environment::sandbox());
+                $builder->setLogger($checkoutLog);
                 $this->fourApi = $builder->build();
                 return;
             case PlatformType::$fourOAuth:
@@ -45,9 +52,11 @@ abstract class SandboxTestFixture extends TestCase
                     FourOAuthScope::$Marketplace, FourOAuthScope::$SessionsApp, FourOAuthScope::$SessionsBrowser,
                     FourOAuthScope::$Vault, FourOAuthScope::$PayoutsBankDetails]);
                 $builder->setEnvironment(Environment::sandbox());
+                $builder->setLogger($checkoutLog);
                 $this->fourApi = $builder->build();
                 return;
             default:
+                $checkoutLog->error("Invalid platform type");
                 throw new CheckoutAuthorizationException("Invalid platform type");
         }
 
