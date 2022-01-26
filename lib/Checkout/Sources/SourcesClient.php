@@ -4,6 +4,7 @@ namespace Checkout\Sources;
 
 use Checkout\ApiClient;
 use Checkout\AuthorizationType;
+use Checkout\CheckoutApiException;
 use Checkout\CheckoutConfiguration;
 use Checkout\Client;
 
@@ -18,7 +19,7 @@ class SourcesClient extends Client
     /**
      * @param SepaSourceRequest $sepaSourceRequest
      * @return mixed
-     * @throws \Checkout\CheckoutApiException
+     * @throws CheckoutApiException
      */
     public function createSepaSource(SepaSourceRequest $sepaSourceRequest)
     {

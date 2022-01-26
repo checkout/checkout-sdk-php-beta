@@ -2,7 +2,7 @@
 
 namespace Checkout\Payments\Source;
 
-class AbstractRequestSource
+abstract class AbstractRequestSource
 {
     public string $type;
 

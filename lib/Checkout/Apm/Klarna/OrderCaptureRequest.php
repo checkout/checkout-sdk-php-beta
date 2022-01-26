@@ -6,6 +6,11 @@ use Checkout\Common\PaymentSourceType;
 
 class OrderCaptureRequest
 {
+    public function __construct()
+    {
+        $this->type = PaymentSourceType::$klarna;
+    }
+
     public string $type;
 
     public int $amount;
@@ -19,11 +24,5 @@ class OrderCaptureRequest
     public KlarnaShippingInfo $shipping_info;
 
     public int $shipping_delay;
-
-    public function __construct()
-    {
-        $this->type = PaymentSourceType::$klarna;
-    }
-
 
 }

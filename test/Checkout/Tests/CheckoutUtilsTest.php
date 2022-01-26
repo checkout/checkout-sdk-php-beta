@@ -2,26 +2,28 @@
 
 namespace Checkout\Tests;
 
-use Checkout\CheckoutApiException;
 use Checkout\CheckoutUtils;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use function PHPUnit\Framework\assertNotEmpty;
-use function PHPUnit\Framework\assertNotNull;
 
 class CheckoutUtilsTest extends TestCase
 {
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
-    public static function shouldGetVersion(): void
+    public static function shouldMatchProjectVersion(): void
     {
-        $version = CheckoutUtils::getVersion();
-        assertNotEmpty($version);
-        assertNotNull($version);
+        $normalizeDir = str_replace(__DIR__, '\\', '//');
+        $path = str_replace($normalizeDir, "\lib\checkout", "version.json");
+        $contentComposer = json_decode(file_get_contents($path), true);
+
+        if (!array_key_exists("version", $contentComposer)) {
+            self::fail();
+        }
+
+        self::assertEquals(CheckoutUtils::PROJECT_VERSION, $contentComposer["version"]);
     }
 
     /**
@@ -33,4 +35,5 @@ class CheckoutUtilsTest extends TestCase
         $formatted = CheckoutUtils::formatDate($date);
         self::assertEquals($date->format(DateTimeInterface::ISO8601), $formatted);
     }
+
 }

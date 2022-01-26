@@ -11,7 +11,6 @@ use Checkout\SdkCredentialsInterface;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 
 abstract class UnitTestFixture extends MockeryTestCase
 {
@@ -47,9 +46,9 @@ abstract class UnitTestFixture extends MockeryTestCase
 
         $httpBuilder = $this->createMock(HttpClientBuilderInterface::class);
 
-        $checkoutLog =  new Logger("checkout-sdk-test-php");
-        $checkoutLog->pushHandler(new StreamHandler('php://stderr'));
-        $checkoutLog->pushHandler(new StreamHandler('checkout-sdk-test-php.log'));
+        $checkoutLog = new Logger("checkout-sdk-test-php");
+        $checkoutLog->pushHandler(new StreamHandler("php://stderr"));
+        $checkoutLog->pushHandler(new StreamHandler("checkout-sdk-test-php.log"));
 
         $this->configuration = new CheckoutConfiguration($sdkCredentials, Environment::sandbox(), $httpBuilder, $checkoutLog);
 

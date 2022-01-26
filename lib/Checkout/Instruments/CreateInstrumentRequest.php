@@ -2,7 +2,7 @@
 
 namespace Checkout\Instruments;
 
-final class CreateInstrumentRequest
+class CreateInstrumentRequest
 {
 
     public string $type;

@@ -4,7 +4,7 @@ namespace Checkout\Payments;
 
 class CaptureRequest
 {
-    public ?int $amount;
+    public int $amount;
 
     public string $reference;
 

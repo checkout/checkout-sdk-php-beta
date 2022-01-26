@@ -2,7 +2,7 @@
 
 namespace Checkout\Instruments;
 
-final class UpdateInstrumentCustomerRequest
+class UpdateInstrumentCustomerRequest
 {
 
     public string $id;

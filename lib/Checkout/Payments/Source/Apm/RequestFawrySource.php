@@ -13,7 +13,12 @@ class RequestFawrySource extends AbstractRequestSource
     }
 
     public string $description;
+
     public string $customer_mobile;
+
     public string $customer_email;
+
+    // FawryProduct
     public array $products;
+
 }

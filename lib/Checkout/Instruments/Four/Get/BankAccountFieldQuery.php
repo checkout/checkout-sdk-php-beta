@@ -4,7 +4,7 @@ namespace Checkout\Instruments\Four\Get;
 
 use Checkout\Common\AbstractQueryFilter;
 
-final class BankAccountFieldQuery extends AbstractQueryFilter
+class BankAccountFieldQuery extends AbstractQueryFilter
 {
     private const KEYS_TRANSFORMATIONS = array(
         "account_holder_type" => "account-holder-type",

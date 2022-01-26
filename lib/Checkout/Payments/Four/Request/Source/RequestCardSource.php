@@ -16,9 +16,9 @@ class RequestCardSource extends AbstractRequestSource
 
     public string $number;
 
-    public ?int $expiry_month;
+    public int $expiry_month;
 
-    public ?int $expiry_year;
+    public int $expiry_year;
 
     public string $name;
 

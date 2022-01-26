@@ -29,8 +29,8 @@ class ForexClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->requestQuote(new QuoteRequest());
         $this->assertNotNull($response);

@@ -66,7 +66,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $requestSource = new RequestBoletoSource();
         $requestSource->country = Country::$BR;
         $requestSource->description = "boleto payment";
-        $requestSource->integration_type = IntegrationType::$REDIRECT;
+        $requestSource->integration_type = IntegrationType::$redirect;
 
         $payer = new Payer();
         $payer->email = "bruce@wayne-enterprises.com";
@@ -100,7 +100,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $requestSource = new RequestBoletoSource();
         $requestSource->country = Country::$BR;
         $requestSource->description = "boleto payment";
-        $requestSource->integration_type = IntegrationType::$DIRECT;
+        $requestSource->integration_type = IntegrationType::$direct;
 
         $payer = new Payer();
         $payer->email = "bruce@wayne-enterprises.com";

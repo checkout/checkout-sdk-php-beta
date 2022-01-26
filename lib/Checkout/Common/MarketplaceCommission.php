@@ -6,6 +6,6 @@ class MarketplaceCommission
 {
     public int $amount;
 
-    public int $percentage;
+    public float $percentage;
 
 }

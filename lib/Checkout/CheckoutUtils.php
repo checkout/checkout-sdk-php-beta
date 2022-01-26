@@ -8,21 +8,8 @@ use DateTimeInterface;
 class CheckoutUtils
 {
 
-    /**
-     * @throws CheckoutApiException
-     * */
-    public static function getVersion(): string
-    {
-        $normalizeDir = str_replace(__DIR__, '\\', '//');
-        $path = str_replace($normalizeDir, "\lib\checkout", "version.json");
-        $contentComposer = json_decode(file_get_contents($path), true);
-
-        if (!array_key_exists("version", $contentComposer)) {
-            throw new CheckoutApiException("the version doesn't exist in the file composer.json");
-        }
-
-        return $contentComposer["version"];
-    }
+    public const PROJECT_NAME = "checkout-sdk-php";
+    public const PROJECT_VERSION = "2.0.0-beta1";
 
     public static function formatDate(DateTime $date): string
     {

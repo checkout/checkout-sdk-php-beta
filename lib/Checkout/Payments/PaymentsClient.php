@@ -20,6 +20,7 @@ class PaymentsClient extends Client
 
     /**
      * @param PaymentRequest $paymentRequest
+     * @param string|null $idempotencyKey
      * @return mixed
      * @throws CheckoutApiException
      */
@@ -30,6 +31,7 @@ class PaymentsClient extends Client
 
     /**
      * @param PayoutRequest $payoutRequest
+     * @param string|null $idempotencyKey
      * @return mixed
      * @throws CheckoutApiException
      */
@@ -61,6 +63,7 @@ class PaymentsClient extends Client
     /**
      * @param string $paymentId
      * @param CaptureRequest|null $captureRequest
+     * @param string|null $idempotencyKey
      * @return mixed
      * @throws CheckoutApiException
      */
@@ -72,6 +75,7 @@ class PaymentsClient extends Client
     /**
      * @param string $paymentId
      * @param RefundRequest|null $refundRequest
+     * @param string|null $idempotencyKey
      * @return mixed
      * @throws CheckoutApiException
      */
@@ -83,6 +87,7 @@ class PaymentsClient extends Client
     /**
      * @param string $paymentId
      * @param VoidRequest|null $voidRequest
+     * @param string|null $idempotencyKey
      * @return mixed
      * @throws CheckoutApiException
      */

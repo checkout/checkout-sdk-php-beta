@@ -6,7 +6,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
-
 abstract class AbstractCheckoutSdkBuilder
 {
 
@@ -42,10 +41,10 @@ abstract class AbstractCheckoutSdkBuilder
             $this->httpClientBuilder, $this->logger);
     }
 
-    private function setDefaultLogger() : void
+    private function setDefaultLogger(): void
     {
-        $this->logger = new Logger("checkout-sdk-php");
-        $this->logger->pushHandler(new StreamHandler('php://stderr'));
+        $this->logger = new Logger(CheckoutUtils::PROJECT_NAME);
+        $this->logger->pushHandler(new StreamHandler("php://stderr"));
     }
 
     protected abstract function getSdkCredentials(): SdkCredentialsInterface;
