@@ -14,7 +14,7 @@ class CheckoutUtils
     public static function getVersion(): string
     {
         $normalizeDir = str_replace(__DIR__, '\\', '//');
-        $path = str_replace($normalizeDir, "\lib\checkout", "composer.json");
+        $path = str_replace($normalizeDir, "\lib\checkout", "version.json");
         $contentComposer = json_decode(file_get_contents($path), true);
 
         if (!array_key_exists("version", $contentComposer)) {
