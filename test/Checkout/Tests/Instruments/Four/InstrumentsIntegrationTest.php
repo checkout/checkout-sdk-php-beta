@@ -3,15 +3,22 @@
 namespace Checkout\Tests\Instruments\Four;
 
 use Checkout\CheckoutApiException;
+use Checkout\CheckoutAuthorizationException;
+use Checkout\Common\Country;
+use Checkout\Common\Currency;
 use Checkout\Common\Four\AccountHolder;
+use Checkout\Common\Four\AccountHolderType;
 use Checkout\Customers\Four\CustomerRequest;
 use Checkout\Instruments\Four\Create\CreateCustomerInstrumentRequest;
 use Checkout\Instruments\Four\Create\CreateTokenInstrumentRequest;
+use Checkout\Instruments\Four\Get\BankAccountFieldQuery;
+use Checkout\Instruments\Four\Get\PaymentNetwork;
 use Checkout\Instruments\Four\Update\UpdateCardInstrumentRequest;
 use Checkout\Instruments\Four\Update\UpdateCustomerRequest;
 use Checkout\Instruments\Four\Update\UpdateTokenInstrumentRequest;
 use Checkout\PlatformType;
 use Checkout\Tests\Payments\Four\AbstractPaymentsIntegrationTest;
+use Exception;
 
 class InstrumentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -187,6 +194,8 @@ class InstrumentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "product_id",
             "product_type",
             "customer");
+
+
         return $response;
     }
 }

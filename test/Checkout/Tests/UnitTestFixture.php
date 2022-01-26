@@ -57,5 +57,4 @@ abstract class UnitTestFixture extends MockeryTestCase
 
         $checkoutLog->info("Unit tests are starting");
     }
-
 }

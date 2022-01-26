@@ -78,5 +78,4 @@ class InstrumentsClientTest extends UnitTestFixture
 
         $this->client->delete("instrument_id");
     }
-
 }

@@ -22,6 +22,11 @@ abstract class Client
         return $this->configuration->getSdkCredentials()->getAuthorization($this->sdkAuthorizationType);
     }
 
+    protected function sdkSpecificAuthorization(string $authorizationType): SdkAuthorization
+    {
+        return $this->configuration->getSdkCredentials()->getAuthorization($authorizationType);
+    }
+
     /**
      * @param mixed ...$parts
      * @return string
