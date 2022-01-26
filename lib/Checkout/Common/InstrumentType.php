@@ -9,5 +9,4 @@ class InstrumentType
     public static string $token = "token";
 
     public static string $card = "card";
-
 }

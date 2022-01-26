@@ -4,9 +4,9 @@ namespace Checkout\Payments;
 
 class ThreeDsRequest
 {
-    public ?bool $enabled = true;
+    public bool $enabled = true;
 
-    public ?bool $attempt_n3d;
+    public bool $attempt_n3d;
 
     public string $eci;
 
@@ -17,5 +17,7 @@ class ThreeDsRequest
     public string $version;
 
     public string $exemption;
+
+    public string $challenge_indicator;
 
 }

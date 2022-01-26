@@ -2,7 +2,7 @@
 
 namespace Checkout\Tokens;
 
-final class ApplePayTokenData
+class ApplePayTokenData
 {
     public string $version;
 

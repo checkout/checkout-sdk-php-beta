@@ -10,10 +10,15 @@ class RequestBalotoSource extends AbstractRequestSource
     public function __construct()
     {
         parent::__construct(PaymentSourceType::$baloto);
+        $this->integration_type = IntegrationType::$redirect;
     }
 
-    public string $integration_type = "redirect";
+    public string $integration_type;
+
     public string $country;
+
     public string $description;
+
     public BalotoPayer $payer;
+
 }

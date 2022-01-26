@@ -13,6 +13,9 @@ class RequestIdealSource extends AbstractRequestSource
     }
 
     public string $bic;
+
     public string $description;
+
     public string $language;
+
 }

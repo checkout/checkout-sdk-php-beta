@@ -16,9 +16,9 @@ class PaymentRequestCardDestination extends PaymentRequestDestination
 
     public string $number;
 
-    public ?int $expiry_month;
+    public int $expiry_month;
 
-    public ?int $expiry_year;
+    public int $expiry_year;
 
     public string $first_name;
 

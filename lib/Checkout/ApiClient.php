@@ -19,20 +19,16 @@ class ApiClient
 
     private JsonSerializer $jsonSerializer;
 
-    private string $headerUserAgentVersion;
-
     private LoggerInterface $logger;
 
     /**
      * @param CheckoutConfiguration $configuration
-     * @throws CheckoutApiException
      */
     public function __construct(CheckoutConfiguration $configuration)
     {
         $this->configuration = $configuration;
         $this->client = $configuration->getHttpClientBuilder()->getClient();
         $this->jsonSerializer = new JsonSerializer();
-        $this->headerUserAgentVersion = "checkout-sdk-php-beta/" . CheckoutUtils::getVersion();
         $this->logger = $this->configuration->getLogger();
     }
 
@@ -195,7 +191,7 @@ class ApiClient
     private function getHeaders(SdkAuthorization $authorization, ?string $contentType, ?string $idempotencyKey): array
     {
         $headers = [
-            "User-agent" => $this->headerUserAgentVersion,
+            "User-agent" => CheckoutUtils::PROJECT_NAME . "/" . CheckoutUtils::PROJECT_VERSION,
             "Accept" => "application/json",
             "Authorization" => $authorization->getAuthorizationHeader()
         ];

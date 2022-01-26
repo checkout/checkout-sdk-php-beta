@@ -2,7 +2,7 @@
 
 namespace Checkout\Tokens;
 
-final class GooglePayTokenData
+class GooglePayTokenData
 {
     public string $signature;
 

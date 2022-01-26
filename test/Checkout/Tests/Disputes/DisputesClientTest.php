@@ -31,8 +31,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('query')
-            ->willReturn('foo');
+            ->method("query")
+            ->willReturn("foo");
 
         $response = $this->client->query(new DisputesQueryFilter());
         $this->assertNotNull($response);
@@ -46,8 +46,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->getDisputeDetails("dispute_id");
         $this->assertNotNull($response);
@@ -61,8 +61,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->accept("dispute_id");
         $this->assertNotNull($response);
@@ -76,8 +76,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('put')
-            ->willReturn('foo');
+            ->method("put")
+            ->willReturn("foo");
 
         $response = $this->client->putEvidence("dispute_id", new DisputeEvidenceRequest());
         $this->assertNotNull($response);
@@ -91,8 +91,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->getEvidence("dispute_id");
         $this->assertNotNull($response);
@@ -106,8 +106,8 @@ class DisputesClientTest extends UnitTestFixture
     {
 
         $this->apiClient
-            ->method('post')
-            ->willReturn('foo');
+            ->method("post")
+            ->willReturn("foo");
 
         $response = $this->client->submitEvidence("dispute_id");
         $this->assertNotNull($response);
@@ -123,8 +123,8 @@ class DisputesClientTest extends UnitTestFixture
         $fileRequest->file = getcwd() . "/test/Checkout/Tests/Resources/checkout.jpeg";
 
         $this->apiClient
-            ->method('submitFile')
-            ->willReturn('foo');
+            ->method("submitFile")
+            ->willReturn("foo");
 
         $response = $this->client->uploadFile($fileRequest);
         $this->assertNotNull($response);
@@ -137,8 +137,8 @@ class DisputesClientTest extends UnitTestFixture
     public function shouldGetFileDetails(): void
     {
         $this->apiClient
-            ->method('get')
-            ->willReturn('foo');
+            ->method("get")
+            ->willReturn("foo");
 
         $response = $this->client->getFileDetails("file_id");
         $this->assertNotNull($response);

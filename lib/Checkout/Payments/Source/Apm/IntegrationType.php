@@ -4,6 +4,6 @@ namespace Checkout\Payments\Source\Apm;
 
 class IntegrationType
 {
-    public static string $DIRECT = "direct";
-    public static string $REDIRECT = "redirect";
+    public static string $direct = "direct";
+    public static string $redirect = "redirect";
 }

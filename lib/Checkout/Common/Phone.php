@@ -2,7 +2,7 @@
 
 namespace Checkout\Common;
 
-final class Phone
+class Phone
 {
 
     public string $country_code;

@@ -2,7 +2,7 @@
 
 namespace Checkout\Tokens;
 
-final class GooglePayTokenRequest extends WalletTokenRequest
+class GooglePayTokenRequest extends WalletTokenRequest
 {
     function __construct()
     {

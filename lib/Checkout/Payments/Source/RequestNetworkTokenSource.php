@@ -16,9 +16,9 @@ class RequestNetworkTokenSource extends AbstractRequestSource
 
     public string $token;
 
-    public ?int $expiry_month;
+    public int $expiry_month;
 
-    public ?int $expiry_year;
+    public int $expiry_year;
 
     public string $token_type;
 

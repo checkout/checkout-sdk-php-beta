@@ -5,7 +5,7 @@ namespace Checkout\Tokens;
 use Checkout\Common\Address;
 use Checkout\Common\Phone;
 
-final class CardTokenRequest
+class CardTokenRequest
 {
     public string $type = "card";
 

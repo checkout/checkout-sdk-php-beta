@@ -12,7 +12,7 @@ class CustomSource extends AbstractRequestSource
         parent::__construct(PaymentSourceType::$alipay);
     }
 
-    public ?int $amount;
+    public int $amount;
 
     public string $currency;
 }

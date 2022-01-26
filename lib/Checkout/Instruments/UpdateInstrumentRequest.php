@@ -2,7 +2,7 @@
 
 namespace Checkout\Instruments;
 
-final class UpdateInstrumentRequest
+class UpdateInstrumentRequest
 {
     public int $expiry_month;
 

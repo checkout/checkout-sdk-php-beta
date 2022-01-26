@@ -10,7 +10,7 @@ class PayoutRequest
 {
     public PaymentRequestDestination $destination;
 
-    public ?int $amount;
+    public int $amount;
 
     public string $currency;
 
@@ -20,7 +20,7 @@ class PayoutRequest
 
     public string $description;
 
-    public ?bool $capture;
+    public bool $capture;
 
     public DateTime $capture_on;
 

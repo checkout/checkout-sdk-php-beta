@@ -8,10 +8,10 @@ class StaticKeysSdkCredentials extends AbstractStaticKeysSdkCredentials
 {
 
     /**
-     * @param string $secretKey
+     * @param string|null $secretKey
      * @param string|null $publicKey
      */
-    public function __construct(string $secretKey, ?string $publicKey)
+    public function __construct(?string $secretKey, ?string $publicKey)
     {
         parent::__construct($secretKey, $publicKey);
     }

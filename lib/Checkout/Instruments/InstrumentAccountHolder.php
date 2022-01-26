@@ -5,7 +5,7 @@ namespace Checkout\Instruments;
 use Checkout\Common\Address;
 use Checkout\Common\Phone;
 
-final class InstrumentAccountHolder
+class InstrumentAccountHolder
 {
     public Address $billing_address;
 
