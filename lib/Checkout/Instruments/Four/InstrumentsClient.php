@@ -6,7 +6,6 @@ use Checkout\ApiClient;
 use Checkout\AuthorizationType;
 use Checkout\CheckoutApiException;
 use Checkout\CheckoutConfiguration;
-use Checkout\CheckoutUtils;
 use Checkout\Client;
 use Checkout\Instruments\Four\Create\CreateInstrumentRequest;
 use Checkout\Instruments\Four\Get\BankAccountFieldQuery;
@@ -71,9 +70,6 @@ class InstrumentsClient extends Client
      */
     public function getBankAccountFieldFormatting(string $country_code, string $currency, BankAccountFieldQuery $query)
     {
-        $query->serializePropertiesName();
-
-
-        return $this->apiClient->query($this->buildPath(self::VALIDATION_PATH, $country_code, $currency), $query, $this->sdkSpecificAuthorization(AuthorizationType::$oAuth));
+        return $this->apiClient->query($this->buildPath(self::VALIDATION_PATH, $country_code, $currency), $query->normalized(), $this->sdkSpecificAuthorization(AuthorizationType::$oAuth));
     }
 }

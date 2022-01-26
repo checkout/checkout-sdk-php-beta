@@ -2,17 +2,29 @@
 
 namespace Checkout\Instruments\Four\Get;
 
-use Checkout\CheckoutUtils;
 use Checkout\Common\AbstractQueryFilter;
 
 final class BankAccountFieldQuery extends AbstractQueryFilter
 {
-    public string $account_holder_type;
-    public string $payment_network;
+    private const KEYS_TRANSFORMATIONS = array(
+        "account_holder_type" => "account-holder-type",
+        "payment_network" => "payment-network"
+    );
 
-    public function serializePropertiesName()
+    public ?string $account_holder_type = null;
+    public ?string $payment_network = null;
+
+    public function normalized(): BankAccountFieldQuery
     {
-        CheckoutUtils::replaceKey($this, "account_holder_type", "account-holder-type");
-        CheckoutUtils::replaceKey($this, "payment_network", "payment-network");
+        $normalized = new BankAccountFieldQuery();
+        foreach (self::KEYS_TRANSFORMATIONS as $originalKey => $modifiedKey) {
+            unset($normalized->$originalKey);
+            if ($this->{$originalKey}) {
+                /** @phpstan-ignore-next-line */
+                $normalized->$modifiedKey = $this->$originalKey;
+            }
+        }
+        return $normalized;
     }
+
 }

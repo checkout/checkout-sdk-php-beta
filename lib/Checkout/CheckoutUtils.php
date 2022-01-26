@@ -7,14 +7,6 @@ use DateTimeInterface;
 
 class CheckoutUtils
 {
-    public static function replaceKey(object $obj, string $oldKey, string $newKey): object
-    {
-        if ($obj->$oldKey) {
-            $obj->$newKey = $obj->$oldKey;
-            unset($obj->$oldKey);
-        }
-        return $obj;
-    }
 
     /**
      * @throws CheckoutApiException
