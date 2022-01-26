@@ -3,7 +3,12 @@
 namespace Checkout\Tests\Instruments\Four;
 
 use Checkout\CheckoutApiException;
+use Checkout\Common\Country;
+use Checkout\Common\Currency;
+use Checkout\Common\Four\AccountHolderType;
 use Checkout\Instruments\Four\Create\CreateBankAccountInstrumentRequest;
+use Checkout\Instruments\Four\Get\BankAccountFieldQuery;
+use Checkout\Instruments\Four\Get\PaymentNetwork;
 use Checkout\Instruments\Four\InstrumentsClient;
 use Checkout\Instruments\Four\Update\UpdateCardInstrumentRequest;
 use Checkout\PlatformType;
@@ -77,5 +82,22 @@ class InstrumentsClientTest extends UnitTestFixture
         $this->apiClient->method("delete");
 
         $this->client->delete("instrument_id");
+    }
+
+    /**
+     * @test
+     * @throws CheckoutApiException
+     */
+    public function shouldGetBankAccountFieldFormatting(): void
+    {
+        $this->apiClient->method("query")
+            ->willReturn("foo");
+
+        $request = new BankAccountFieldQuery();
+        $request->payment_network = PaymentNetwork::$local;
+        $request->account_holder_type = AccountHolderType::$individual;
+
+        $response = $this->client->getBankAccountFieldFormatting(Country::$GB, Currency::$GBP, $request);
+        $this->assertNotNull($response);
     }
 }

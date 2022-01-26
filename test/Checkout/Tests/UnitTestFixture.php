@@ -48,5 +48,4 @@ abstract class UnitTestFixture extends MockeryTestCase
 
         $this->apiClient = $this->createStub(ApiClient::class);
     }
-
 }
