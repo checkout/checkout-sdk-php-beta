@@ -22,6 +22,7 @@ abstract class SandboxTestFixture extends TestCase
     protected \Checkout\Four\CheckoutApi $fourApi;
 
     protected const MESSAGE_404 = "The API response status code (404) does not indicate success.";
+    protected const MESSAGE_403 = "The API response status code (403) does not indicate success.";
 
     protected function init(string $platformType): void
     {

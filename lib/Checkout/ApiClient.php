@@ -54,7 +54,8 @@ class ApiClient
      */
     public function post(string $path, $body, SdkAuthorization $authorization, string $idempotencyKey = null)
     {
-        $response = $this->invoke("POST", $path, $this->jsonSerializer->serialize($body), $authorization, $idempotencyKey);
+        $response = $this->invoke("POST", $path, is_null($body) ? $body : $this->jsonSerializer->serialize($body), $authorization, $idempotencyKey);
+
         return $this->jsonSerializer->deserialize($response->getBody());
     }
 
