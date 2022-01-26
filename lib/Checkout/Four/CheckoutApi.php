@@ -9,6 +9,7 @@ use Checkout\Disputes\DisputesClient;
 use Checkout\Forex\ForexClient;
 use Checkout\Instruments\Four\InstrumentsClient;
 use Checkout\Payments\Four\PaymentsClient;
+use Checkout\Sessions\SessionsClient;
 use Checkout\Tokens\TokensClient;
 
 final class CheckoutApi
@@ -19,6 +20,7 @@ final class CheckoutApi
     private InstrumentsClient $instrumentsClient;
     private ForexClient $forexClient;
     private DisputesClient $disputesClient;
+    private SessionsClient $sessionsClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -28,6 +30,7 @@ final class CheckoutApi
         $this->instrumentsClient = new InstrumentsClient($apiClient, $configuration);
         $this->forexClient = new ForexClient($apiClient, $configuration);
         $this->disputesClient = new DisputesClient($apiClient, $configuration);
+        $this->sessionsClient = new SessionsClient($apiClient, $configuration);
     }
 
     public function getTokensClient(): TokensClient
@@ -58,6 +61,11 @@ final class CheckoutApi
     public function getDisputesClient(): DisputesClient
     {
         return $this->disputesClient;
+    }
+
+    public function getSessionsClient(): SessionsClient
+    {
+        return $this->sessionsClient;
     }
 
 }
