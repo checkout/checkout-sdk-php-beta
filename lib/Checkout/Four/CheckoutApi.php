@@ -8,6 +8,7 @@ use Checkout\Customers\Four\CustomersClient;
 use Checkout\Disputes\DisputesClient;
 use Checkout\Forex\ForexClient;
 use Checkout\Instruments\Four\InstrumentsClient;
+use Checkout\Marketplace\MarketplaceClient;
 use Checkout\Payments\Four\PaymentsClient;
 use Checkout\Sessions\SessionsClient;
 use Checkout\Tokens\TokensClient;
@@ -21,6 +22,7 @@ final class CheckoutApi
     private ForexClient $forexClient;
     private DisputesClient $disputesClient;
     private SessionsClient $sessionsClient;
+    private MarketplaceClient $marketplaceClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -31,6 +33,12 @@ final class CheckoutApi
         $this->forexClient = new ForexClient($apiClient, $configuration);
         $this->disputesClient = new DisputesClient($apiClient, $configuration);
         $this->sessionsClient = new SessionsClient($apiClient, $configuration);
+        $fileApiConfig = $configuration->getFilesConfiguration();
+        $this->marketplaceClient = new MarketplaceClient($apiClient, null, $configuration);
+        if ($fileApiConfig != null) {
+            $apiFilesClient = new ApiClient($configuration, $fileApiConfig->getEnvironment()->getFilesBaseUri());
+            $this->marketplaceClient = new MarketplaceClient($apiClient, $apiFilesClient, $configuration);
+        }
     }
 
     public function getTokensClient(): TokensClient
@@ -68,4 +76,8 @@ final class CheckoutApi
         return $this->sessionsClient;
     }
 
+    public function getMarketplaceClient(): MarketplaceClient
+    {
+        return $this->marketplaceClient;
+    }
 }

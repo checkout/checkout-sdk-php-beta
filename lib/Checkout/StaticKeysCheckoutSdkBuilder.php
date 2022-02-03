@@ -30,7 +30,6 @@ class StaticKeysCheckoutSdkBuilder extends AbstractStaticKeysCheckoutSdkBuilder
 
     /**
      * @return CheckoutApi
-     * @throws CheckoutApiException
      */
     public function build(): CheckoutApi
     {

@@ -21,15 +21,15 @@ class ApiClient
 
     private LoggerInterface $logger;
 
-    /**
-     * @param CheckoutConfiguration $configuration
-     */
-    public function __construct(CheckoutConfiguration $configuration)
+    private string $baseUri;
+
+    public function __construct(CheckoutConfiguration $configuration, string $baseUri = null)
     {
         $this->configuration = $configuration;
         $this->client = $configuration->getHttpClientBuilder()->getClient();
         $this->jsonSerializer = new JsonSerializer();
         $this->logger = $this->configuration->getLogger();
+        $this->baseUri = $baseUri ?? $this->configuration->getEnvironment()->getBaseUri();
     }
 
     /**
@@ -122,6 +122,31 @@ class ApiClient
      */
     public function submitFile(string $path, FileRequest $fileRequest, SdkAuthorization $authorization)
     {
+        return $this->submit($path, $fileRequest, $authorization, "file");
+    }
+
+    /**
+     * @param string $path
+     * @param FileRequest $fileRequest
+     * @param SdkAuthorization $authorization
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    public function submitFileFilesApi(string $path, FileRequest $fileRequest, SdkAuthorization $authorization)
+    {
+        return $this->submit($path, $fileRequest, $authorization, "path");
+    }
+
+    /**
+     * @param string $path
+     * @param FileRequest $fileRequest
+     * @param SdkAuthorization $authorization
+     * @param string $multipart
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    private function submit(string $path, FileRequest $fileRequest, SdkAuthorization $authorization, string $multipart)
+    {
         try {
             $this->logger->info("POST " . $path . " file: " . $fileRequest->file);
             $headers = $this->getHeaders($authorization, null, null);
@@ -130,7 +155,7 @@ class ApiClient
                 "headers" => $headers,
                 "multipart" => [
                     [
-                        "name" => "file",
+                        "name" => $multipart,
                         "contents" => fopen($fileRequest->file, "r")
                     ],
                     [
@@ -178,7 +203,7 @@ class ApiClient
 
     private function getRequestUrl(string $path): string
     {
-        return $this->configuration->getEnvironment()->getBaseUri() . $path;
+        return $this->baseUri . $path;
     }
 
 

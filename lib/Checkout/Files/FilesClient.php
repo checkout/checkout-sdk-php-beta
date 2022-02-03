@@ -46,5 +46,4 @@ class FilesClient extends Client
             throw new CheckoutApiException("The file type is not supported.\n Supported file types: JPG/JPEG, PNG and PDF.");
         }
     }
-
 }
