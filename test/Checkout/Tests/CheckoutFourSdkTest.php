@@ -71,6 +71,7 @@ class CheckoutFourSdkTest extends UnitTestFixture
         $builder->setPublicKey(parent::$validFourPk);
         $builder->setSecretKey(parent::$validFourSk);
         $builder->setEnvironment(Environment::sandbox());
+        $builder->setFilesEnvironment(Environment::sandbox());
         $builder->setHttpClientBuilder($httpBuilder);
         $this->assertNotNull($builder->build());
     }

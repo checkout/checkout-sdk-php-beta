@@ -3,11 +3,9 @@
 namespace Checkout\Tests\Disputes;
 
 use Checkout\CheckoutApiException;
-use Checkout\CheckoutUtils;
 use Checkout\Disputes\DisputeEvidenceRequest;
 use Checkout\Disputes\DisputesQueryFilter;
 use Checkout\Files\FileRequest;
-use Checkout\Tests\CheckoutTestUtils;
 use Checkout\Tests\Payments\AbstractPaymentsIntegrationTest;
 use DateInterval;
 use DateTime;
@@ -15,7 +13,6 @@ use DateTimeZone;
 
 class DisputesIntegrationTest extends AbstractPaymentsIntegrationTest
 {
-
     /**
      * @test
      * @throws CheckoutApiException

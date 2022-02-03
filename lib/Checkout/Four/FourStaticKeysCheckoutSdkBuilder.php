@@ -4,7 +4,6 @@ namespace Checkout\Four;
 
 use Checkout\AbstractStaticKeysCheckoutSdkBuilder;
 use Checkout\ApiClient;
-use Checkout\CheckoutApiException;
 use Checkout\CheckoutConfiguration;
 use Checkout\SdkCredentialsInterface;
 
@@ -35,7 +34,6 @@ class FourStaticKeysCheckoutSdkBuilder extends AbstractStaticKeysCheckoutSdkBuil
 
     /**
      * @return CheckoutApi
-     * @throws CheckoutApiException
      */
     public function build(): CheckoutApi
     {
