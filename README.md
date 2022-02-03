@@ -1,12 +1,14 @@
-# Checkout.com PHP SDK
+# Checkout.com PHP SDK beta
 
-![build-status](https://github.com/checkout/checkout-sdk-php-beta/workflows/build-main/badge.svg)
-[![GitHub license](https://img.shields.io/github/license/checkout/checkout-sdk-php-beta.svg)](https://github.com/checkout/checkout-sdk-php-beta/blob/master/LICENSE.md)
+This is a temporary Checkout PHP SDK project that will be archived and transferred to the [official repository](https://github.com/checkout/checkout-sdk-php) once it reaches stable.
+
+![build-main](https://github.com/checkout/checkout-sdk-php-beta/workflows/build-main/badge.svg)
+[![GitHub license](https://img.shields.io/github/license/checkout/checkout-sdk-php-beta.svg)](https://github.com/checkout/checkout-sdk-php-beta/blob/main/LICENSE.md)
 [![GitHub release](https://img.shields.io/github/release/checkout/checkout-sdk-php-beta.svg)](https://GitHub.com/checkout/checkout-sdk-php-beta/releases/)
 
 ## Getting started
 
-Packages and sources are available from [Packagist](https://packagist.org/packages/checkout/checkout-sdk-php).
+Packages and sources are available from [Packagist](https://packagist.org/packages/checkout/checkout-sdk-php-beta).
 
 #### Composer
 
@@ -14,7 +16,7 @@ Packages and sources are available from [Packagist](https://packagist.org/packag
 
 "require": {
     "php": ">=7.4",
-    "checkout/checkout-sdk-php": "2.0.0-beta1"
+    "checkout/checkout-sdk-php-beta": "2.0.0-beta1"
 }
 ```
 

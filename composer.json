@@ -1,5 +1,5 @@
 {
-    "name": "checkout/checkout-sdk-php",
+    "name": "checkout/checkout-sdk-php-beta",
     "description": "Checkout.com SDK for PHP",
     "homepage": "https://github.com/checkout/checkout-sdk-php-beta",
     "type": "library",
@@ -21,7 +21,7 @@
     "authors": [
         {
             "name": "Checkout.com",
-            "homepage": "https://github.com/checkout/checkout-sdk-php/graphs/contributors",
+            "homepage": "https://github.com/checkout/checkout-sdk-php-beta/graphs/contributors",
             "email": "integrations@checkout.com"
         }
     ],
