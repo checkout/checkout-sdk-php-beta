@@ -9,7 +9,7 @@
         </include>
     </coverage>
     <testsuites>
-        <testsuite name="checkout-sdk-php Test Suite">
+        <testsuite name="checkout-sdk-php-beta Test Suite">
             <directory>./test/Checkout/</directory>
         </testsuite>
     </testsuites>
