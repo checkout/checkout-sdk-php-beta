@@ -16,7 +16,7 @@ Packages and sources are available from [Packagist](https://packagist.org/packag
 
 "require": {
     "php": ">=7.4",
-    "checkout/checkout-sdk-php-beta": "2.0.0-beta1"
+    "checkout/checkout-sdk-php-beta": "version"
 }
 ```
 
