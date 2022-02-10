@@ -98,4 +98,17 @@ class PaymentsClient extends Client
     {
         return $this->apiClient->post($this->buildPath(self::PAYMENTS_PATH, $paymentId, "voids"), $voidRequest, $this->sdkAuthorization(), $idempotencyKey);
     }
+
+    /**
+     * @param string $paymentId
+     * @param AuthorizationRequest|null $authorizationRequest
+     * @param string|null $idempotencyKey
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    public function incrementPaymentAuthorization(string $paymentId, AuthorizationRequest $authorizationRequest = null, string $idempotencyKey = null)
+    {
+        return $this->apiClient->post($this->buildPath(self::PAYMENTS_PATH, $paymentId, "authorizations"), $authorizationRequest, $this->sdkAuthorization(), $idempotencyKey);
+    }
+
 }
