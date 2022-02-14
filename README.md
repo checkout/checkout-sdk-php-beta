@@ -5,6 +5,7 @@ This is a temporary Checkout PHP SDK project that will be archived and transferr
 ![build-main](https://github.com/checkout/checkout-sdk-php-beta/workflows/build-main/badge.svg)
 [![GitHub license](https://img.shields.io/github/license/checkout/checkout-sdk-php-beta.svg)](https://github.com/checkout/checkout-sdk-php-beta/blob/main/LICENSE.md)
 [![GitHub release](https://img.shields.io/github/release/checkout/checkout-sdk-php-beta.svg)](https://GitHub.com/checkout/checkout-sdk-php-beta/releases/)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=checkout_checkout-sdk-php-beta&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=checkout_checkout-sdk-php-beta)
 
 ## Getting started
 
