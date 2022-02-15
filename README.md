@@ -14,7 +14,6 @@ Packages and sources are available from [Packagist](https://packagist.org/packag
 #### Composer
 
 ```json
-
 "require": {
     "php": ">=7.4",
     "checkout/checkout-sdk-php-beta": "version"
@@ -33,6 +32,8 @@ This SDK can be used with two different pair of API keys provided by Checkout. H
 | Four           | pk_pkhpdtvabcf7hdgpwnbhw7r2uic          | sk_m73dzypy7cf3gf5d2xr4k7sxo4e          |
 
 Note: sandbox keys have a `test_` or `sbox_` identifier, for Default and Four accounts respectively.
+
+**PLEASE NEVER SHARE OR PUBLISH YOUR CHECKOUT CREDENTIALS.**
 
 If you don't have your own API keys, you can sign up for a test account [here](https://www.checkout.com/get-test-account).
 
