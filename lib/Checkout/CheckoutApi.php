@@ -7,6 +7,8 @@ use Checkout\Customers\CustomersClient;
 use Checkout\Disputes\DisputesClient;
 use Checkout\Events\EventsClient;
 use Checkout\Instruments\InstrumentsClient;
+use Checkout\Payments\Hosted\HostedPaymentsClient;
+use Checkout\Payments\Links\PaymentLinksClient;
 use Checkout\Payments\PaymentsClient;
 use Checkout\Sources\SourcesClient;
 use Checkout\Tokens\TokensClient;
@@ -22,6 +24,8 @@ final class CheckoutApi extends CheckoutApmApi
     private PaymentsClient $paymentsClient;
     private CustomersClient $customersClient;
     private DisputesClient $disputesClient;
+    private PaymentLinksClient $paymentLinksClient;
+    private HostedPaymentsClient $hostedPaymentsClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -34,6 +38,8 @@ final class CheckoutApi extends CheckoutApmApi
         $this->paymentsClient = new PaymentsClient($apiClient, $configuration);
         $this->customersClient = new CustomersClient($apiClient, $configuration);
         $this->disputesClient = new DisputesClient($apiClient, $configuration);
+        $this->paymentLinksClient = new PaymentLinksClient($apiClient, $configuration);
+        $this->hostedPaymentsClient = new HostedPaymentsClient($apiClient, $configuration);
     }
 
     public function getSourcesClient(): SourcesClient
@@ -74,6 +80,16 @@ final class CheckoutApi extends CheckoutApmApi
     public function getDisputesClient(): DisputesClient
     {
         return $this->disputesClient;
+    }
+
+    public function getPaymentLinksClient(): PaymentLinksClient
+    {
+        return $this->paymentLinksClient;
+    }
+
+    public function getHostedPaymentsClient(): HostedPaymentsClient
+    {
+        return $this->hostedPaymentsClient;
     }
 
 }
