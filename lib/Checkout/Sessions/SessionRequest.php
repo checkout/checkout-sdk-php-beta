@@ -2,7 +2,6 @@
 
 namespace Checkout\Sessions;
 
-use Checkout\Common\MarketplaceData;
 use Checkout\Sessions\Channel\ChannelData;
 use Checkout\Sessions\Completion\CompletionInfo;
 use Checkout\Sessions\Source\SessionSource;
@@ -17,7 +16,7 @@ class SessionRequest
 
     public string $processing_channel_id;
 
-    public MarketplaceData $marketplace;
+    public SessionMarketplaceData $marketplace;
 
     public string $authentication_type;
 

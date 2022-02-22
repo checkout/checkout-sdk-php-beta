@@ -7,7 +7,6 @@ use Checkout\CheckoutAuthorizationException;
 use Checkout\Common\ChallengeIndicatorType;
 use Checkout\Common\Country;
 use Checkout\Common\Currency;
-use Checkout\Common\MarketplaceData;
 use Checkout\Common\Phone;
 use Checkout\PlatformType;
 use Checkout\Sessions\AuthenticationType;
@@ -21,6 +20,7 @@ use Checkout\Sessions\Channel\ThreeDsMethodCompletion;
 use Checkout\Sessions\Completion\HostedCompletionInfo;
 use Checkout\Sessions\Completion\NonHostedCompletionInfo;
 use Checkout\Sessions\SessionAddress;
+use Checkout\Sessions\SessionMarketplaceData;
 use Checkout\Sessions\SessionRequest;
 use Checkout\Sessions\SessionsBillingDescriptor;
 use Checkout\Sessions\Source\SessionCardSource;
@@ -80,7 +80,7 @@ abstract class AbstractSessionsIntegrationTest extends SandboxTestFixture
         $shippingAddress->zip = "W1T 4TJ";
         $shippingAddress->country = Country::$GB;
 
-        $marketPlaceData = new MarketplaceData();
+        $marketPlaceData = new SessionMarketplaceData();
         $marketPlaceData->sub_entity_id = "ent_ocw5i74vowfg2edpy66izhts2u";
 
         $billingDescriptor = new SessionsBillingDescriptor();
