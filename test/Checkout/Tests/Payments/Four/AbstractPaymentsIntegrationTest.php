@@ -3,6 +3,7 @@
 namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
+use Checkout\CheckoutAuthorizationException;
 use Checkout\Common\Address;
 use Checkout\Common\Country;
 use Checkout\Common\Currency;
@@ -25,10 +26,9 @@ use DateTime;
 
 abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
 {
-    protected string $idempotencyKey = "test.net";
-
     /**
      * @before
+     * @throws CheckoutAuthorizationException
      */
     public function before(): void
     {
@@ -38,6 +38,7 @@ abstract class AbstractPaymentsIntegrationTest extends SandboxTestFixture
     /**
      * @param bool $shouldCapture
      * @param int $amount
+     * @param DateTime|null $captureOn
      * @return mixed
      * @throws CheckoutApiException
      */

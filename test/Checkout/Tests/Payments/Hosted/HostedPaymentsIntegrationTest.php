@@ -2,6 +2,7 @@
 
 namespace Checkout\Tests\Payments\Hosted;
 
+use Checkout\CheckoutApiException;
 use Checkout\Common\Address;
 use Checkout\Common\Country;
 use Checkout\Common\Currency;
@@ -31,6 +32,7 @@ class HostedPaymentsIntegrationTest extends SandboxTestFixture
 
     /**
      * @test
+     * @throws CheckoutApiException
      */
     public function shouldCreateAndGetHostedPaymentsPageDetails(): void
     {

@@ -56,7 +56,7 @@ class IncrementPaymentsAuthorizationsTest extends AbstractPaymentsIntegrationTes
         $authorizationRequest->reference = uniqid();
         $authorizationRequest->metadata = array("param1" => "value1", "param2" => "value2");
 
-        $idempotencyKey = uniqid();
+        $idempotencyKey = $this->idempotencyKey();
 
         $authorizationResponse = $this->fourApi->getPaymentsClient()->incrementPaymentAuthorization($paymentResponse["id"], $authorizationRequest, $idempotencyKey);
         $authorizationResponse2 = $this->fourApi->getPaymentsClient()->incrementPaymentAuthorization($paymentResponse["id"], $authorizationRequest, $idempotencyKey);

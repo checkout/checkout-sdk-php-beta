@@ -45,7 +45,8 @@ class RequestPayoutsIntegrationTest extends AbstractPaymentsIntegrationTest
             "customer",
             "customer.id");
 
-        $payment = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]);
+        $payment = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]));
+
         $this->assertResponse($payment,
             "destination",
             "destination.bin",

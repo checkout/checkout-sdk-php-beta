@@ -12,6 +12,8 @@ use Checkout\PlatformType;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Exception;
+use Psr\Log\LoggerInterface;
 use function PHPUnit\Framework\assertNotEmpty;
 use function PHPUnit\Framework\assertNotNull;
 
@@ -24,18 +26,20 @@ abstract class SandboxTestFixture extends TestCase
     protected const MESSAGE_404 = "The API response status code (404) does not indicate success.";
     protected const MESSAGE_403 = "The API response status code (403) does not indicate success.";
 
+    private LoggerInterface $logger;
+
     protected function init(string $platformType): void
     {
-        $logger = new Logger("checkout-sdk-test-php");
-        $logger->pushHandler(new StreamHandler("php://stderr"));
-        $logger->pushHandler(new StreamHandler("checkout-sdk-test-php.log"));
+        $this->logger = new Logger("checkout-sdk-test-php");
+        $this->logger->pushHandler(new StreamHandler("php://stderr"));
+        $this->logger->pushHandler(new StreamHandler("checkout-sdk-test-php.log"));
         switch ($platformType) {
             case PlatformType::$default:
                 $builder = CheckoutDefaultSdk::staticKeys();
                 $builder->setPublicKey(getenv("CHECKOUT_PUBLIC_KEY"));
                 $builder->setSecretKey(getenv("CHECKOUT_SECRET_KEY"));
                 $builder->setEnvironment(Environment::sandbox());
-                $builder->setLogger($logger);
+                $builder->setLogger($this->logger);
                 $this->defaultApi = $builder->build();
                 return;
             case PlatformType::$four:
@@ -43,7 +47,7 @@ abstract class SandboxTestFixture extends TestCase
                 $builder->setPublicKey(getenv("CHECKOUT_FOUR_PUBLIC_KEY"));
                 $builder->setSecretKey(getenv("CHECKOUT_FOUR_SECRET_KEY"));
                 $builder->setEnvironment(Environment::sandbox());
-                $builder->setLogger($logger);
+                $builder->setLogger($this->logger);
                 $this->fourApi = $builder->build();
                 return;
             case PlatformType::$fourOAuth:
@@ -54,11 +58,11 @@ abstract class SandboxTestFixture extends TestCase
                     FourOAuthScope::$Vault, FourOAuthScope::$PayoutsBankDetails]);
                 $builder->setEnvironment(Environment::sandbox());
                 $builder->setFilesEnvironment(Environment::sandbox());
-                $builder->setLogger($logger);
+                $builder->setLogger($this->logger);
                 $this->fourApi = $builder->build();
                 return;
             default:
-                $logger->error("Invalid platform type");
+                $this->logger->error("Invalid platform type");
                 throw new CheckoutAuthorizationException("Invalid platform type");
         }
 
@@ -85,19 +89,46 @@ abstract class SandboxTestFixture extends TestCase
         }
     }
 
-    protected function nap(int $seconds = 5): void
-    {
-        sleep($seconds);
-    }
-
     protected function randomEmail(): string
     {
         return uniqid() . "@checkout-sdk-net.com";
     }
 
+    protected function idempotencyKey(): string
+    {
+        return substr(uniqid(), 0, 8);
+    }
+
     public static function getCheckoutFilePath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . "Resources" . DIRECTORY_SEPARATOR . "checkout.jpeg";
+    }
+
+    /**
+     * @param callable $func
+     * @param callable|null $predicate
+     * @return mixed
+     */
+    protected function retriable(callable $func, callable $predicate = null)
+    {
+        $currentAttempt = 1;
+        $maxAttempts = 10;
+        while ($currentAttempt <= $maxAttempts) {
+            try {
+                $response = $func();
+                if (is_null($predicate)) {
+                    return $response;
+                }
+                if ($predicate($response)) {
+                    return $response;
+                }
+            } catch (\Exception $ex) {
+                $this->logger->warning("Request/Predicate failed with error '${ex}' - retry ${currentAttempt}/${maxAttempts}");
+            }
+            $currentAttempt++;
+            sleep(2);
+        }
+        throw new Exception("Max attempts reached!");
     }
 
 }

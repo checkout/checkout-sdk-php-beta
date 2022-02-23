@@ -7,6 +7,7 @@ use Checkout\Disputes\DisputeEvidenceRequest;
 use Checkout\Disputes\DisputesQueryFilter;
 use Checkout\Files\FileRequest;
 use Checkout\Tests\Payments\AbstractPaymentsIntegrationTest;
+use Closure;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
@@ -83,11 +84,8 @@ class DisputesIntegrationTest extends AbstractPaymentsIntegrationTest
         $filter = new DisputesQueryFilter();
         $filter->payment_id = $payment["id"];
 
-        $queryResponse = null;
-        while (empty($queryResponse) || $queryResponse["total_count"] == 0) {
-            $this->nap();
-            $queryResponse = $this->defaultApi->getDisputesClient()->query($filter);
-        }
+        $queryResponse = self::retriable(fn() => $this->defaultApi->getDisputesClient()->query($filter), $this->thereAreDisputes());
+
         $this->assertResponse($queryResponse, "data");
         self::assertEquals($payment["id"], $queryResponse["data"]["0"]["payment_id"]);
 
@@ -123,6 +121,14 @@ class DisputesIntegrationTest extends AbstractPaymentsIntegrationTest
             "additional_evidence_file",
             "additional_evidence_text");
 
+    }
+
+    /**
+     * @return Closure
+     */
+    private function thereAreDisputes(): Closure
+    {
+        return fn($response) => array_key_exists("total_count", $response) && $response["total_count"] != 0;
     }
 
 }

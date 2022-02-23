@@ -26,11 +26,9 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeBalotoPayment(): void
     {
-        $this->markTestSkipped("unstable");
         $requestSource = new RequestBalotoSource();
         $requestSource->country = Country::$CO;
         $requestSource->description = "simulate Via Baloto Demo Payment";
@@ -43,13 +41,15 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
         $paymentRequest = new PaymentRequest();
         $paymentRequest->source = $requestSource;
-        $paymentRequest->amount = 10000;
+        $paymentRequest->amount = 100000;
         $paymentRequest->currency = Currency::$COP;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        self::assertResponse($paymentResponse1, "id");
+
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
+
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -59,7 +59,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeBoletoPayment_Redirect(): void
     {
@@ -80,10 +79,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->amount = 100;
         $paymentRequest->currency = Currency::$BRL;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -93,7 +92,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeBoletoPayment_Direct(): void
     {
@@ -114,10 +112,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->amount = 100;
         $paymentRequest->currency = Currency::$BRL;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -127,7 +125,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeFawryPayment(): void
     {
@@ -146,13 +143,13 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
         $paymentRequest = new PaymentRequest();
         $paymentRequest->source = $requestSource;
-        $paymentRequest->amount = 100;
-        $paymentRequest->currency = Currency::$BRL;
+        $paymentRequest->amount = 1000;
+        $paymentRequest->currency = Currency::$EGP;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -162,7 +159,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeGiropayPayment(): void
     {
@@ -175,10 +171,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$EUR;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -188,7 +184,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeIdealPayment(): void
     {
@@ -203,10 +198,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$EUR;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -216,7 +211,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeOxxoPayment(): void
     {
@@ -236,10 +230,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$MXN;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -249,7 +243,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakePagoFacilPayment(): void
     {
@@ -269,10 +262,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$ARS;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -282,7 +275,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeRapiPagoPayment(): void
     {
@@ -302,10 +294,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$ARS;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",
@@ -315,10 +307,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeSofortPayment(): void
     {
+        $this->markTestSkipped("unstable");
         $requestSource = new RequestSofortSource();
 
         $paymentRequest = new PaymentRequest();
@@ -327,10 +319,10 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->currency = Currency::$ARS;
         $paymentRequest->capture = true;
 
-        $paymentResponse1 = $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
-        self::assertResponse($paymentResponse1,"id");
+        $paymentResponse1 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->requestPayment($paymentRequest));
+        self::assertResponse($paymentResponse1, "id");
 
-        $paymentResponse2 = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
         self::assertResponse($paymentResponse2,
             "id",
             "source",

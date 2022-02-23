@@ -48,13 +48,12 @@ class WebhooksIntegrationTest extends SandboxTestFixture
         self::assertEquals($webhookRequest->content_type, $registerResponse["content_type"]);
         self::assertEquals($webhookRequest->event_types, $registerResponse["event_types"]);
 
-        $this->nap();
-
         // retrieve
 
         $webhookId = $registerResponse["id"];
 
-        $retrieveResponse = $this->defaultApi->getWebhooksClient()->retrieveWebhook($webhookId);
+        $retrieveResponse = self::retriable(fn() => $this->defaultApi->getWebhooksClient()->retrieveWebhook($webhookId));
+
         self::assertNotNull($retrieveResponse);
         self::assertEquals($webhookId, $retrieveResponse["id"]);
         self::assertEquals($webhookRequest->url, $registerResponse["url"]);
@@ -70,14 +69,13 @@ class WebhooksIntegrationTest extends SandboxTestFixture
         $updateRequest->event_types = array("source_updated");
         $updateRequest->active = true;
 
-        $updateResponse = $this->defaultApi->getWebhooksClient()->updateWebhook($webhookId, $updateRequest);
+        $updateResponse = self::retriable(fn() => $this->defaultApi->getWebhooksClient()->updateWebhook($webhookId, $updateRequest));
+
         self::assertNotNull($updateResponse);
         self::assertEquals($webhookId, $updateResponse["id"]);
         self::assertEquals($updateRequest->url, $updateResponse["url"]);
         self::assertEquals($updateRequest->content_type, $updateResponse["content_type"]);
         self::assertEquals($updateRequest->event_types, $updateResponse["event_types"]);
-
-        $this->nap();
 
         // delete
 

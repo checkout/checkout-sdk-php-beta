@@ -16,7 +16,7 @@ class CustomersIntegrationTest extends SandboxTestFixture
      */
     public function before(): void
     {
-        $this->init(PlatformType::$four);
+        $this->init(PlatformType::$fourOAuth);
     }
 
     /**
