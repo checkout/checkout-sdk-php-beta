@@ -188,10 +188,12 @@ class RequestPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->amount = 10;
         $paymentRequest->currency = Currency::$GBP;
 
-        $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $idempotencyKey = $this->idempotencyKey();
+
+        $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $idempotencyKey);
         self::assertNotNull($paymentResponse1);
 
-        $paymentResponse2 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $paymentResponse2 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $idempotencyKey);
         self::assertNotNull($paymentResponse2);
 
         //self::assertEquals($paymentResponse1["action_id"], $paymentResponse2["action_id"]);

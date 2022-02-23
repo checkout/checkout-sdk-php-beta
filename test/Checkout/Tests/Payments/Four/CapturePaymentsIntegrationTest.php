@@ -4,6 +4,7 @@ namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
 use Checkout\Payments\Four\CaptureRequest;
+use Closure;
 
 class CapturePaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -22,9 +23,8 @@ class CapturePaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $response = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest);
         $this->assertResponse($response, "reference", "action_id");
 
-        $this->nap();
+        $paymentDetails = self::retriable(fn() => $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]), $this->totalCapturedIs(10));
 
-        $paymentDetails = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]);
         $this->assertResponse($paymentDetails,
             "balances.total_authorized",
             "balances.total_captured",
@@ -47,9 +47,8 @@ class CapturePaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $response = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest);
         $this->assertResponse($response, "reference", "action_id");
 
-        $this->nap();
+        $paymentDetails = self::retriable(fn() => $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]), $this->totalCapturedIs(5));
 
-        $paymentDetails = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]);
         $this->assertResponse($paymentDetails,
             "balances.total_authorized",
             "balances.total_captured",
@@ -58,6 +57,9 @@ class CapturePaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         self::assertEquals($amount, $paymentDetails["balances"]["available_to_refund"]);
     }
 
+    /**
+     * @throws CheckoutApiException
+     */
     public function shouldCaptureCardPaymentIdempotently(): void
     {
         $paymentResponse = $this->makeCardPayment();
@@ -65,12 +67,23 @@ class CapturePaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $captureRequest = new CaptureRequest();
         $captureRequest->reference = uniqid();
 
-        $capture1 = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest, $this->idempotencyKey);
+        $idempotencyKey = $this->idempotencyKey();
+
+        $capture1 = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest, $idempotencyKey);
         self::assertNotNull($capture1);
 
-        $capture2 = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest, $this->idempotencyKey);
+        $capture2 = $this->fourApi->getPaymentsClient()->capturePayment($paymentResponse["id"], $captureRequest, $idempotencyKey);
         self::assertNotNull($capture2);
 
         self::assertEquals($capture1["action_id"], $capture2["action_id"]);
+    }
+
+    /**
+     * @param int $amount
+     * @return Closure
+     */
+    private function totalCapturedIs(int $amount): Closure
+    {
+        return fn($response): bool => array_key_exists("balances", $response) && $response["balances"]["total_captured"] == $amount;
     }
 }

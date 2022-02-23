@@ -12,7 +12,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeIdealPayment(): void
     {
@@ -29,7 +28,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->success_url = "https://testing.checkout.com/sucess";
         $paymentRequest->failure_url = "https://testing.checkout.com/failure";
 
-        $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $paymentResponse1 = $this->retriable(fn() => $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest));
 
         self::assertResponse($paymentResponse1,
             "id",
@@ -38,7 +37,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "_links.self",
             "_links.redirect");
 
-        $paymentResponse2 = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
 
         self::assertResponse($paymentResponse2,
             "id",
@@ -48,13 +47,11 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             //"balances",
             "currency",
             "payment_type",
-            "status",
-            "approved");
+            "status");
     }
 
     /**
      * @test
-     * @throws CheckoutApiException
      */
     public function shouldMakeSofortPayment(): void
     {
@@ -68,7 +65,8 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $paymentRequest->success_url = "https://testing.checkout.com/sucess";
         $paymentRequest->failure_url = "https://testing.checkout.com/failure";
 
-        $paymentResponse1 = $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest, $this->idempotencyKey);
+        $paymentResponse1 = $this->retriable(fn() => $this->fourApi->getPaymentsClient()->requestPayment($paymentRequest));
+
         self::assertResponse($paymentResponse1,
             "id",
             "status",
@@ -76,7 +74,7 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             "_links.self",
             "_links.redirect");
 
-        $paymentResponse2 = $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]);
+        $paymentResponse2 = $this->retriable(fn() => $this->fourApi->getPaymentsClient()->getPaymentDetails($paymentResponse1["id"]));
 
         self::assertResponse($paymentResponse2,
             "id",
@@ -86,7 +84,6 @@ class RequestApmPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
             //"balances",
             "currency",
             "payment_type",
-            "status",
-            "approved");
+            "status");
     }
 }

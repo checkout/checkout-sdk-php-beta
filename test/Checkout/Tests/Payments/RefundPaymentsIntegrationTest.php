@@ -14,15 +14,12 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldRefundCardPayment(): void
     {
-        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment(true);
-
-        $this->nap();
 
         $refundRequest = new RefundRequest();
         $refundRequest->reference = uniqid();
 
-        $response = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"]);
+        $response = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"]));
 
         $this->assertResponse($response,
             "action_id",
@@ -35,16 +32,15 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldRefundCardPaymentIdempotent(): void
     {
-        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment(true);
-
-        $this->nap();
 
         $refundRequest = new RefundRequest();
         $refundRequest->reference = uniqid("shouldRefundCardPayment_Idempotent");
         $refundRequest->amount = 2;
 
-        $response1 = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest, $this->idempotencyKey);
+        $idempotencyKey = $this->idempotencyKey();
+
+        $response1 = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest, $idempotencyKey));
 
         $this->assertResponse($response1,
             "action_id",
@@ -54,7 +50,7 @@ class RefundPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
         $refundRequest2->reference = uniqid("shouldRefundCardPayment_Idempotent2");
         $refundRequest2->amount = 2;
 
-        $response2 = $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest2, $this->idempotencyKey);
+        $response2 = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->refundPayment($paymentResponse["id"], $refundRequest2, $idempotencyKey));
 
         self::assertEquals($response1["action_id"], $response2["action_id"]);
     }

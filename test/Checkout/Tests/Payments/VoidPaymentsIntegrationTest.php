@@ -14,13 +14,13 @@ class VoidPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldVoidCardPayment(): void
     {
-        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment();
 
         $voidRequest = new VoidRequest();
         $voidRequest->reference = uniqid("shouldVoidCardPayment");
 
-        $response = $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest);
+        $response = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest));
+
         $this->assertResponse($response,
             "action_id",
             "reference");
@@ -32,16 +32,19 @@ class VoidPaymentsIntegrationTest extends AbstractPaymentsIntegrationTest
      */
     public function shouldVoidCardPayment_Idempotent(): void
     {
-        $this->markTestSkipped("unstable");
         $paymentResponse = $this->makeCardPayment();
 
         $voidRequest = new VoidRequest();
         $voidRequest->reference = uniqid("shouldVoidCardPayment");
 
-        $response1 = $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest, $this->idempotencyKey);
+        $idempotencyKey = $this->idempotencyKey();
+
+        $response1 = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest, $idempotencyKey));
+
         self::assertNotNull($response1);
 
-        $response2 = $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest, $this->idempotencyKey);
+        $response2 = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->voidPayment($paymentResponse["id"], $voidRequest, $idempotencyKey));
+
         self::assertNotNull($response2);
 
         self::assertEquals($response1["action_id"], $response2["action_id"]);

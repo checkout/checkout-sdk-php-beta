@@ -3,6 +3,7 @@
 namespace Checkout\Tests\Payments\Four;
 
 use Checkout\CheckoutApiException;
+use Closure;
 
 class PaymentActionsIntegrationTest extends AbstractPaymentsIntegrationTest
 {
@@ -15,9 +16,8 @@ class PaymentActionsIntegrationTest extends AbstractPaymentsIntegrationTest
     {
         $paymentResponse = $this->makeCardPayment(true);
 
-        $this->nap();
+        $actions = self::retriable(fn() => $this->fourApi->getPaymentsClient()->getPaymentActions($paymentResponse["id"]), $this->thereAreTwoPaymentActions());
 
-        $actions = $this->fourApi->getPaymentsClient()->getPaymentActions($paymentResponse["id"]);
         self::assertNotNull($actions);
         self::assertCount(2, $actions);
         foreach ($actions as $paymentAction) {
@@ -30,5 +30,13 @@ class PaymentActionsIntegrationTest extends AbstractPaymentsIntegrationTest
                 "response_summary",
                 "type");
         }
+    }
+
+    /**
+     * @return Closure
+     */
+    private function thereAreTwoPaymentActions(): Closure
+    {
+        return fn($response): bool => sizeof($response) == 2;
     }
 }

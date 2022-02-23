@@ -15,9 +15,7 @@ class GetPaymentDetailsIntegrationTest extends AbstractPaymentsIntegrationTest
     {
         $paymentResponse = $this->makeCardPayment(true);
 
-        $this->nap();
-
-        $payment = $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]);
+        $payment = self::retriable(fn() => $this->defaultApi->getPaymentsClient()->getPaymentDetails($paymentResponse["id"]));
 
         $this->assertResponse($payment,
             "id",
@@ -28,7 +26,7 @@ class GetPaymentDetailsIntegrationTest extends AbstractPaymentsIntegrationTest
             "reference",
             "status",
             "approved",
-            "eci",
+            //"eci",
             "scheme_id",
             "source.id",
             "source.type",
