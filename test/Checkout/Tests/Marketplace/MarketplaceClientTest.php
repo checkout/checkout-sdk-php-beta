@@ -4,6 +4,7 @@ namespace Checkout\Tests\Marketplace;
 
 use Checkout\CheckoutApiException;
 use Checkout\CheckoutFileException;
+use Checkout\Marketplace\CreateTransferRequest;
 use Checkout\Marketplace\MarketplaceClient;
 use Checkout\Marketplace\MarketplaceFileRequest;
 use Checkout\Marketplace\MarketplacePaymentInstrument;
@@ -100,6 +101,23 @@ class MarketplaceClientTest extends UnitTestFixture
         $fileRequest->content_type = "image/jpeg";
 
         $response = $this->client->submitFile($fileRequest);
+
+        $this->assertNotNull($response);
+    }
+
+    /**
+     * @test
+     * @throws CheckoutApiException|CheckoutFileException
+     */
+    public function shouldTransferOfFunds(): void
+    {
+        $this->apiClient
+            ->method("post")
+            ->willReturn("response");
+
+        $transferRequest = new CreateTransferRequest();
+
+        $response = $this->client->initiateTransferOfFunds($transferRequest);
 
         $this->assertNotNull($response);
     }

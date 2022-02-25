@@ -15,6 +15,7 @@ class MarketplaceClient extends FilesClient
     private const INSTRUMENT_PATH = "instruments";
     private const FILES_PATH = "files";
     private const ENTITIES_PATH = "entities";
+    private const TRANSFERS_PATH = "transfers";
 
     private ?ApiClient $filesApiClient;
 
@@ -78,6 +79,16 @@ class MarketplaceClient extends FilesClient
                 "Files API is not enabled in this client. It must be enabled in CheckoutFourSdk configuration.");
         }
         return $this->filesApiClient->submitFileFilesApi(self::FILES_PATH, $marketplaceFileRequest, $this->sdkAuthorization());
+    }
+
+    /**
+     * @param CreateTransferRequest $transferRequest
+     * @return mixed
+     * @throws CheckoutApiException
+     */
+    public function initiateTransferOfFunds(CreateTransferRequest $transferRequest)
+    {
+        return $this->apiClient->post(self::TRANSFERS_PATH, $transferRequest, $this->sdkAuthorization());
     }
 
 }
