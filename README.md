@@ -1,6 +1,6 @@
 # Checkout.com PHP SDK beta
 
-This is a temporary Checkout PHP SDK project that will be archived and transferred to the [official repository](https://github.com/checkout/checkout-sdk-php) once it reaches stable.
+This is a temporary development Checkout PHP SDK project that was archived and transferred to the [official repository](https://github.com/checkout/checkout-sdk-php).
 
 ![build-main](https://github.com/checkout/checkout-sdk-php-beta/workflows/build-main/badge.svg)
 [![GitHub license](https://img.shields.io/github/license/checkout/checkout-sdk-php-beta.svg)](https://github.com/checkout/checkout-sdk-php-beta/blob/main/LICENSE.md)
