@@ -8,4 +8,8 @@ class BillingDescriptor
 
     public string $city;
 
+    //Only available in four
+
+    public string $reference;
+
 }
