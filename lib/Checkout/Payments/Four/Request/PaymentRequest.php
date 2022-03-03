@@ -4,6 +4,7 @@ namespace Checkout\Payments\Four\Request;
 
 use Checkout\Common\CustomerRequest;
 use Checkout\Common\MarketplaceData;
+use Checkout\Payments\BillingDescriptor;
 use Checkout\Payments\Four\Request\Source\AbstractRequestSource;
 use Checkout\Payments\Four\Sender\PaymentSender;
 use Checkout\Payments\PaymentRecipient;
@@ -37,6 +38,8 @@ class PaymentRequest
     public DateTime $capture_on;
 
     public CustomerRequest $customer;
+
+    public BillingDescriptor $billing_descriptor;
 
     public ShippingDetails $shipping;
 
