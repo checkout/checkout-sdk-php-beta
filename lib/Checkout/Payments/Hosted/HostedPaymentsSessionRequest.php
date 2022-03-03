@@ -3,6 +3,7 @@
 namespace Checkout\Payments\Hosted;
 
 use Checkout\Common\CustomerRequest;
+use Checkout\Common\MarketplaceData;
 use Checkout\Payments\BillingDescriptor;
 use Checkout\Payments\BillingInformation;
 use Checkout\Payments\PaymentRecipient;
@@ -58,5 +59,14 @@ class HostedPaymentsSessionRequest
     public string $payment_ip;
 
     public BillingDescriptor $billing_descriptor;
+
+    //PaymentSourceType
+    public array $allow_payment_methods;
+
+    // Only available in Four
+
+    public string $processing_channel_id;
+
+    public MarketplaceData $marketplace;
 
 }
