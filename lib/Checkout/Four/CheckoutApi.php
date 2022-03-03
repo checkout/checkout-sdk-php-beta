@@ -13,7 +13,7 @@ use Checkout\Payments\Four\PaymentsClient;
 use Checkout\Sessions\SessionsClient;
 use Checkout\Tokens\TokensClient;
 
-final class CheckoutApi
+final class CheckoutApi extends CheckoutApmApi
 {
     private TokensClient $tokensClient;
     private CustomersClient $customersClient;
@@ -26,6 +26,7 @@ final class CheckoutApi
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
+        parent::__construct($apiClient, $configuration);
         $this->tokensClient = new TokensClient($apiClient, $configuration);
         $this->customersClient = new CustomersClient($apiClient, $configuration);
         $this->paymentsClient = new PaymentsClient($apiClient, $configuration);
