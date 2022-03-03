@@ -10,6 +10,8 @@ use Checkout\Forex\ForexClient;
 use Checkout\Instruments\Four\InstrumentsClient;
 use Checkout\Marketplace\MarketplaceClient;
 use Checkout\Payments\Four\PaymentsClient;
+use Checkout\Payments\Hosted\HostedPaymentsClient;
+use Checkout\Payments\Links\PaymentLinksClient;
 use Checkout\Sessions\SessionsClient;
 use Checkout\Tokens\TokensClient;
 
@@ -23,6 +25,8 @@ final class CheckoutApi
     private DisputesClient $disputesClient;
     private SessionsClient $sessionsClient;
     private MarketplaceClient $marketplaceClient;
+    private HostedPaymentsClient $hostedPaymentsClient;
+    private PaymentLinksClient $paymentLinksClient;
 
     public function __construct(ApiClient $apiClient, CheckoutConfiguration $configuration)
     {
@@ -33,6 +37,8 @@ final class CheckoutApi
         $this->forexClient = new ForexClient($apiClient, $configuration);
         $this->disputesClient = new DisputesClient($apiClient, $configuration);
         $this->sessionsClient = new SessionsClient($apiClient, $configuration);
+        $this->hostedPaymentsClient = new HostedPaymentsClient($apiClient, $configuration);
+        $this->paymentLinksClient = new PaymentLinksClient($apiClient, $configuration);
         $fileApiConfig = $configuration->getFilesConfiguration();
         $this->marketplaceClient = new MarketplaceClient($apiClient, null, $configuration);
         if ($fileApiConfig != null) {
@@ -80,4 +86,16 @@ final class CheckoutApi
     {
         return $this->marketplaceClient;
     }
+
+    public function getHostedPaymentsClient(): HostedPaymentsClient
+    {
+        return $this->hostedPaymentsClient;
+    }
+
+    public function getPaymentLinksClient(): PaymentLinksClient
+    {
+        return $this->paymentLinksClient;
+    }
+
+
 }

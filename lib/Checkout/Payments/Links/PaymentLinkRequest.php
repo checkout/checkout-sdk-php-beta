@@ -58,4 +58,6 @@ class PaymentLinkRequest
 
     public BillingDescriptor $billing_descriptor;
 
+    public array $allow_payment_methods;
+
 }
